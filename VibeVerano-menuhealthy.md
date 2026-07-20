@@ -28,6 +28,7 @@ Diseñar una app que:
 - [[VibeVerano-menuhealthy - spec 002 planificación semanal de menús]]
 - [[VibeVerano-menuhealthy - spec 003 lista de la compra]]
 - [[VibeVerano-menuhealthy - spec 004 ajustes sustituciones y seguimiento]]
+- [[VibeVerano-menuhealthy - spec 005 catálogo de recetas alimentos y valores nutricionales]]
 
 ## Estado actual
 

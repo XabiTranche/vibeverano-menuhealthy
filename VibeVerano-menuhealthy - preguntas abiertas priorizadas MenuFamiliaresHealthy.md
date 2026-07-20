@@ -25,6 +25,14 @@ La idea es cerrar primero las decisiones que afectan al alcance del MVP, al mode
 
 ---
 
+## Decisiones ya tomadas
+
+| # | Decisión | Resolución | Fecha | Spec afectada |
+|---|----------|-----------|-------|---------------|
+| D1 | Integración con API externa de valores nutricionales (Food Data Central) | **FUERA DE MVP**. Los valores nutricionales se introducen siempre de forma manual en el MVP. La integración con API es opcional para iteraciones futuras. | 2026-07-20 | spec 005 |
+
+---
+
 ## Prioridad 1 — imprescindibles para cerrar el MVP
 
 Estas preguntas bloquean decisiones estructurales del producto. Sin responderlas, las specs siguen demasiado abiertas.
@@ -122,54 +130,111 @@ Estas preguntas bloquean decisiones estructurales del producto. Sin responderlas
 - semanas parciales o planificación flexible
 - exportación / impresión / checklist móvil
 
+**Decisión parcial ya tomada:** la integración con API de valores nutricionales queda fuera del MVP (ver sección "Decisiones ya tomadas").
+
+### 11. ¿El catálogo de recetas debe ser estrictamente familiar o puede haber un catálogo base compartido (recetas de referencia) además del catálogo propio del hogar?
+**Por qué importa:** define si el sistema arranca vacío o con contenido de referencia, y si los hogares pueden beneficiarse de una base común.
+
+**Opciones a decidir:**
+- solo catálogo propio del hogar (empieza vacío)
+- catálogo base de referencia + catálogo propio
+- recetas compartidas entre hogares
+
+**Fuente:** spec 005
+
+### 12. ¿Se quiere soporte para porciones/raciones en la receta desde MVP?
+**Por qué importa:** impacta en el cálculo de la lista de la compra (si una receta es "para 4 personas" y la familia tiene 6, las cantidades deben ajustarse) y en el aporte nutricional por persona.
+
+**Opciones a decidir:**
+- sin porciones en MVP (receta sin referencia a comensales)
+- porciones opcionales
+- porciones obligatorias al dar de alta la receta
+
+**Fuente:** spec 005
+
+### 13. ¿Debe existir un catálogo maestro de ingredientes normalizados o cada hogar puede usar nombres libres?
+**Por qué importa:** afecta directamente a la consolidación de ingredientes en la lista de la compra (spec 003). Con nombres libres, "tomate" y "tomates" podrían no consolidarse.
+
+**Opciones a decidir:**
+- nombres libres (más ágil, peor consolidación)
+- catálogo normalizado (más preciso, requiere mantenimiento)
+- modelo híbrido (sugerencias de normalización sin obligar)
+
+**Fuente:** spec 005
+
+### 14. ¿El cálculo automático del aporte nutricional total de la receta (suma de ingredientes) entra en MVP o se deja para fase posterior?
+**Por qué importa:** si entra, el usuario solo necesita introducir valores por ingrediente y el sistema calcula el total. Si no entra, el usuario introduce tanto valores por ingrediente como el total de la receta manualmente.
+
+**Opciones a decidir:**
+- solo total manual de la receta
+- cálculo automático desde ingredientes
+- ambos (manual como override del calculado)
+
+**Fuente:** spec 005
+
 ---
 
 ## Prioridad 2 — importantes para afinar experiencia y reglas
 
 No bloquean la idea base, pero sí el diseño funcional fino y la calidad del resultado.
 
-### 11. ¿Debe existir un perfil específico para niños con reglas distintas?
+### 15. ¿Debe existir un perfil específico para niños con reglas distintas?
 **Por qué importa:** puede cambiar recomendaciones, restricciones y lenguaje de configuración.
 
-### 12. ¿Hace falta contemplar custodias alternas, hogares de una sola persona o semanas con miembros no presentes?
+### 16. ¿Hace falta contemplar custodias alternas, hogares de una sola persona o semanas con miembros no presentes?
 **Por qué importa:** define si el modelo familiar debe soportar composiciones variables en el tiempo.
 
-### 13. ¿Cómo se configurará el patrón semanal de comidas?
+### 17. ¿Cómo se configurará el patrón semanal de comidas?
 **Por qué importa:** algunas familias no hacen el mismo número de comidas todos los días.
 
-### 14. ¿Debe la app ofrecer una sola propuesta semanal o varias alternativas comparables?
+### 18. ¿Debe la app ofrecer una sola propuesta semanal o varias alternativas comparables?
 **Por qué importa:** impacta en UX y en la percepción de utilidad/elección.
 
-### 15. ¿Qué pasa cuando no existe una propuesta plenamente compatible?
+### 19. ¿Qué pasa cuando no existe una propuesta plenamente compatible?
 **Por qué importa:** hay que decidir si el sistema:
 - bloquea
 - propone compromisos
 - propone alternativas parciales
 - deja elegir manualmente
 
-### 16. ¿Se quiere medir y limitar la repetición de platos o ingredientes?
+### 20. ¿Se quiere medir y limitar la repetición de platos o ingredientes?
 **Por qué importa:** afecta a la calidad percibida del menú.
 
-### 17. ¿La app debe recomendar recetas completas o solo platos/comidas planificadas?
+### 21. ¿La app debe recomendar recetas completas o solo platos/comidas planificadas?
 **Por qué importa:** cambia mucho el nivel de detalle del producto.
 
-### 18. ¿La lista de la compra debe incluir categorías de compra desde MVP?
+### 22. ¿La lista de la compra debe incluir categorías de compra desde MVP?
 **Por qué importa:** mejora la experiencia, pero puede posponerse si hace falta simplificar.
 
-### 19. ¿Habrá modo borrador para generar lista antes de aprobar el menú?
+### 23. ¿Habrá modo borrador para generar lista antes de aprobar el menú?
 **Por qué importa:** afecta al flujo entre planificación y ejecución.
 
-### 20. ¿Se quiere marcado de despensa simple o también cantidades parciales en casa?
+### 24. ¿Se quiere marcado de despensa simple o también cantidades parciales en casa?
 **Por qué importa:** cambia el esfuerzo de uso y la precisión del ajuste de compra.
 
-### 21. ¿La lista será colaborativa o compartible entre varios miembros del hogar?
+### 25. ¿La lista será colaborativa o compartible entre varios miembros del hogar?
 **Por qué importa:** puede ser clave para uso real, pero también añade complejidad de coordinación.
 
-### 22. ¿Hay que mostrar diff explícito en la lista cuando cambia el menú?
+### 26. ¿Hay que mostrar diff explícito en la lista cuando cambia el menú?
 **Por qué importa:** mejora claridad operativa tras ajustes de última hora.
 
-### 23. ¿Hay que recoger el motivo de cada cambio o sustitución?
+### 27. ¿Hay que recoger el motivo de cada cambio o sustitución?
 **Por qué importa:** influye en aprendizaje futuro y en el análisis de problemas reales de uso.
+
+### 28. ¿Las etiquetas de compatibilidad de recetas deben inferirse automáticamente a partir de los ingredientes o siempre ser manuales?
+**Por qué importa:** la inferencia automática reduce trabajo del usuario pero requiere un catálogo de ingredientes con restricciones asociadas. Si es manual, es más simple pero propenso a errores humanos.
+
+**Opciones a decidir:**
+- siempre manuales
+- inferencia automática con confirmación del usuario
+- inferencia automática sin confirmación
+
+**Fuente:** spec 005
+
+### 29. ¿Debe el sistema sugerir etiquetas de objetivo (alta en proteína, baja en calorías, etc.) en función del aporte nutricional calculado?
+**Por qué importa:** reduce esfuerzo de clasificación manual pero depende de que exista un cálculo nutricional fiable.
+
+**Fuente:** spec 005
 
 ---
 
@@ -177,22 +242,22 @@ No bloquean la idea base, pero sí el diseño funcional fino y la calidad del re
 
 Útiles, pero no deberían frenar el primer recorte del producto.
 
-### 24. ¿Hace falta histórico real y versionado de perfiles, menús y criterios?
+### 30. ¿Hace falta histórico real y versionado de perfiles, menús y criterios?
 **Por qué importa:** útil para trazabilidad, pero no imprescindible para validar el valor inicial.
 
-### 25. ¿El sistema debe aprender activamente de cambios y rechazos desde MVP o solo registrar señales?
+### 31. ¿El sistema debe aprender activamente de cambios y rechazos desde MVP o solo registrar señales?
 **Por qué importa:** separa un MVP más simple de una versión más inteligente.
 
-### 26. ¿Debe existir seguimiento semanal del cumplimiento del menú?
+### 32. ¿Debe existir seguimiento semanal del cumplimiento del menú?
 **Por qué importa:** es valioso para mejora continua, pero no es imprescindible para planificar y comprar.
 
-### 27. ¿Ese seguimiento debe ser simple o detallado por miembro y comida?
+### 33. ¿Ese seguimiento debe ser simple o detallado por miembro y comida?
 **Por qué importa:** define el peso operativo del feedback semanal.
 
-### 28. ¿Deben mantenerse menús originales y menús ajustados con histórico completo?
+### 34. ¿Deben mantenerse menús originales y menús ajustados con histórico completo?
 **Por qué importa:** útil para análisis posterior, pero no es una necesidad de primer uso.
 
-### 29. ¿Cómo se medirán algunos criterios de éxito del producto?
+### 35. ¿Cómo se medirán algunos criterios de éxito del producto?
 **Por qué importa:** conviene definir desde el principio qué significa “funciona bien”.
 
 **Ejemplos a concretar:**
@@ -200,6 +265,11 @@ No bloquean la idea base, pero sí el diseño funcional fino y la calidad del re
 - porcentaje de semanas que no se rehacen desde cero
 - reducción de olvidos o compras repetidas
 - mejora en aceptación del menú
+
+### 36. ¿Se contempla importar recetas desde otras fuentes (webs, PDFs, apps) en fases futuras?
+**Por qué importa:** puede ser un acelerador de adopción, pero añade complejidad de parsing y normalización.
+
+**Fuente:** spec 005
 
 ---
 
@@ -217,6 +287,10 @@ Para avanzar rápido, conviene cerrar primero este paquete mínimo de decisiones
 8. **ingrediente genérico vs producto comercial**
 9. **sustituciones manuales vs automáticas**
 10. **qué queda fuera del MVP**
+11. **catálogo familiar vs catálogo base compartido** *(nuevo — spec 005)*
+12. **porciones/raciones en recetas** *(nuevo — spec 005)*
+13. **ingredientes normalizados vs nombres libres** *(nuevo — spec 005)*
+14. **cálculo automático de aporte nutricional total** *(nuevo — spec 005)*
 
 ---
 
@@ -225,11 +299,11 @@ Para avanzar rápido, conviene cerrar primero este paquete mínimo de decisiones
 ### Sesión 1 — alcance y modelo base
 Responder preguntas 1 a 6.
 
-### Sesión 2 — lista de la compra y flujo operativo
-Responder preguntas 7 a 10 y 18 a 23.
+### Sesión 2 — catálogo de recetas, lista de la compra y flujo operativo
+Responder preguntas 7 a 14 y 22 a 27.
 
 ### Sesión 3 — mejora continua y fases posteriores
-Responder preguntas 24 a 29.
+Responder preguntas 28 a 36.
 
 ---
 
@@ -240,3 +314,4 @@ Estas preguntas salen de:
 - `002-planificacion-semanal-de-menus/spec.md`
 - `003-lista-de-la-compra/spec.md`
 - `004-ajustes-sustituciones-y-seguimiento/spec.md`
+- `005-catalogo-recetas-alimentos-valores-nutricionales/spec.md`
