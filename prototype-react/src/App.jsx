@@ -278,7 +278,7 @@ function BottomNav() {
 function BackButton({ to }) {
   const navigate = useNavigate()
   return (
-    <button className="icon-button" onClick={() => (to ? navigate(to) : navigate(-1))}>
+    <button type="button" aria-label="Volver" className="icon-button" onClick={() => (to ? navigate(to) : navigate(-1))}>
       <ArrowLeft size={20} />
     </button>
   )
@@ -443,7 +443,7 @@ function RecipesScreen() {
           <div className="chip-wrap">
             {['Cena', 'Sin gluten', 'Alta proteína'].map((tag) => <span key={tag} className="chip chip-active">{tag}</span>)}
           </div>
-          <button className="icon-button subtle"><Filter size={16} /></button>
+          <button type="button" aria-label="Abrir filtros" className="icon-button subtle"><Filter size={16} /></button>
         </div>
       </Card>
 
