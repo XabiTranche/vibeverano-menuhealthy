@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="430" height="932" viewBox="0 0 430 932">
+  <style>
+    .bg { fill: #f5f7f6; }
+    .phone { fill: #ffffff; stroke: #1f2937; stroke-width: 2; }
+    .screen { fill: #fcfcfb; stroke: #cbd5e1; stroke-width: 1.5; }
+    .bar { fill: #e5e7eb; stroke: #9ca3af; stroke-width: 1; }
+    .card { fill: #ffffff; stroke: #94a3b8; stroke-width: 1.5; rx: 16; }
+    .card-soft { fill: #f8fafc; stroke: #cbd5e1; stroke-width: 1.2; rx: 14; }
+    .cta { fill: #d1fae5; stroke: #059669; stroke-width: 1.5; rx: 14; }
+    .warn { fill: #ffedd5; stroke: #ea580c; stroke-width: 1.5; rx: 12; }
+    .chip { fill: #eef2f7; stroke: #94a3b8; stroke-width: 1; rx: 10; }
+    .title { font: 700 20px Inter, Arial, sans-serif; fill: #0f172a; }
+    .subtitle { font: 600 14px Inter, Arial, sans-serif; fill: #334155; }
+    .label { font: 600 12px Inter, Arial, sans-serif; fill: #475569; }
+    .meta { font: 500 11px Inter, Arial, sans-serif; fill: #64748b; }
+    .body { font: 500 12px Inter, Arial, sans-serif; fill: #1f2937; }
+    .tiny { font: 500 10px Inter, Arial, sans-serif; fill: #64748b; }
+    .center { text-anchor: middle; dominant-baseline: middle; }
+    .outline { fill: none; stroke: #94a3b8; stroke-width: 1.2; rx: 12; }
+    .icon { fill: #e2e8f0; stroke: #64748b; stroke-width: 1; }
+    .divider { stroke: #cbd5e1; stroke-width: 1; }
+</style>
+  <rect x="0" y="0" width="430" height="932" class="bg"/>
+  <rect x="15" y="15" width="400" height="900" rx="36" ry="36" class="phone"/>
+  <rect x="170" y="34" width="90" height="10" rx="5" class="bar"/>
+  <rect x="35" y="75" width="360" height="780" rx="28" ry="28" class="screen"/>
+  <text x="55" y="103" class="title">Recetas</text>
+  <text x="55" y="123" class="meta">Librería operativa + búsqueda fuerte</text>
+  <rect x="55" y="91" width="320" height="44" class="card-soft" rx="14" ry="14"/><text x="73" y="119" class="meta">Buscar por nombre o ingrediente</text><rect x="307" y="91" width="68" height="44" class="card" rx="14" ry="14"/><text x="341" y="118" class="tiny" text-anchor="middle">Filtros</text><rect x="55" y="149" width="92" height="24" class="chip" rx="10" ry="10"/><rect x="155" y="149" width="84" height="24" class="chip" rx="10" ry="10"/><rect x="247" y="149" width="112" height="24" class="chip" rx="10" ry="10"/><text x="101" y="165" class="tiny" text-anchor="middle">Cena</text><text x="197" y="165" class="tiny" text-anchor="middle">Sin gluten</text><text x="303" y="165" class="tiny" text-anchor="middle">Alta proteína</text><rect x="55" y="191" width="320" height="106" class="card" rx="18" ry="18"/><text x="73" y="215" class="subtitle">Lasaña de verduras</text><text x="73" y="241" class="body">Cena · 35 min</text><text x="73" y="261" class="meta">En uso en semana actual</text><rect x="275" y="205" width="82" height="22" class="chip" rx="10" ry="10"/><text x="316" y="220" class="tiny" text-anchor="middle">En uso</text><rect x="263" y="251" width="94" height="30" class="card-soft" rx="12" ry="12"/><text x="310" y="270" class="tiny" text-anchor="middle">Ver ficha</text><rect x="55" y="311" width="320" height="106" class="card" rx="18" ry="18"/><text x="73" y="335" class="subtitle">Arroz con pollo</text><text x="73" y="361" class="body">Comida · 40 min</text><text x="73" y="381" class="meta">Compatible niños</text><rect x="263" y="371" width="94" height="30" class="card-soft" rx="12" ry="12"/><text x="310" y="390" class="tiny" text-anchor="middle">Ver ficha</text><rect x="55" y="431" width="320" height="106" class="warn" rx="18" ry="18"/><text x="73" y="455" class="subtitle">Crema de calabaza</text><text x="73" y="481" class="body">Cena · 20 min</text><text x="73" y="501" class="meta">Nutrición incompleta</text><rect x="263" y="491" width="94" height="30" class="card-soft" rx="12" ry="12"/><text x="310" y="510" class="tiny" text-anchor="middle">Ver ficha</text><rect x="241" y="687" width="134" height="44" class="cta" rx="16" ry="16"/><text x="308" y="715" class="subtitle" text-anchor="middle">Nueva receta</text><rect x="47" y="779" width="336" height="64" class="card-soft" rx="20" ry="20"/><rect x="54" y="795" width="50" height="34" class="card-soft" rx="12" ry="12"/><text x="79" y="844" class="tiny" text-anchor="middle">Plan</text><rect x="141" y="795" width="50" height="34" class="cta" rx="12" ry="12"/><text x="166" y="844" class="tiny" text-anchor="middle">Recetas</text><rect x="229" y="795" width="50" height="34" class="card-soft" rx="12" ry="12"/><text x="254" y="844" class="tiny" text-anchor="middle">Compra</text><rect x="316" y="795" width="50" height="34" class="card-soft" rx="12" ry="12"/><text x="341" y="844" class="tiny" text-anchor="middle">Familia</text>
+</svg>
