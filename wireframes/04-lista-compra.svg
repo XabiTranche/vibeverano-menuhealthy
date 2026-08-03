@@ -1,0 +1,124 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 390 900" width="390" height="900">
+  <!-- Fondo canvas crema -->
+  <rect width="390" height="900" fill="#faf8f5"/>
+
+  <!-- Status bar -->
+  <rect width="390" height="44" fill="#faf8f5"/>
+  <text x="195" y="30" font-family="Nunito, sans-serif" font-size="12" font-weight="600" fill="#1a1a1a" text-anchor="middle">9:41</text>
+
+  <!-- Título pantalla -->
+  <text x="16" y="80" font-family="Nunito, sans-serif" font-size="28" font-weight="700" fill="#1a1a1a">Lista de la compra</text>
+  <text x="16" y="102" font-family="Nunito, sans-serif" font-size="13" font-weight="400" fill="#7a7a72">Semana del 4 al 10 ago</text>
+
+  <!-- Contador -->
+  <text x="374" y="102" font-family="Nunito, sans-serif" font-size="13" font-weight="600" fill="#2d7a4f" text-anchor="end">3/14</text>
+
+  <!-- Sección: VERDURAS -->
+  <text x="16" y="140" font-family="Nunito, sans-serif" font-size="12" font-weight="600" fill="#7a7a72" letter-spacing="0.2">VERDURAS</text>
+
+  <!-- Item 1 - pendiente -->
+  <rect x="16" y="152" width="358" height="52" rx="12" fill="#ffffff"/>
+  <circle cx="40" cy="178" r="10" fill="none" stroke="#e8e4dc" stroke-width="1.5"/>
+  <text x="60" y="183" font-family="Nunito, sans-serif" font-size="15" font-weight="400" fill="#1a1a1a">Tomates</text>
+  <text x="358" y="183" font-family="Nunito, sans-serif" font-size="13" font-weight="400" fill="#7a7a72" text-anchor="end">1 kg</text>
+
+  <!-- Item 2 - pendiente -->
+  <rect x="16" y="212" width="358" height="52" rx="12" fill="#ffffff"/>
+  <circle cx="40" cy="238" r="10" fill="none" stroke="#e8e4dc" stroke-width="1.5"/>
+  <text x="60" y="243" font-family="Nunito, sans-serif" font-size="15" font-weight="400" fill="#1a1a1a">Espinacas</text>
+  <text x="358" y="243" font-family="Nunito, sans-serif" font-size="13" font-weight="400" fill="#7a7a72" text-anchor="end">300g</text>
+
+  <!-- Item 3 - pendiente -->
+  <rect x="16" y="272" width="358" height="52" rx="12" fill="#ffffff"/>
+  <circle cx="40" cy="298" r="10" fill="none" stroke="#e8e4dc" stroke-width="1.5"/>
+  <text x="60" y="303" font-family="Nunito, sans-serif" font-size="15" font-weight="400" fill="#1a1a1a">Aguacate</text>
+  <text x="358" y="303" font-family="Nunito, sans-serif" font-size="13" font-weight="400" fill="#7a7a72" text-anchor="end">4 uds</text>
+
+  <!-- Item 4 - pendiente -->
+  <rect x="16" y="332" width="358" height="52" rx="12" fill="#ffffff"/>
+  <circle cx="40" cy="358" r="10" fill="none" stroke="#e8e4dc" stroke-width="1.5"/>
+  <text x="60" y="363" font-family="Nunito, sans-serif" font-size="15" font-weight="400" fill="#1a1a1a">Zanahoria</text>
+  <text x="358" y="363" font-family="Nunito, sans-serif" font-size="13" font-weight="400" fill="#7a7a72" text-anchor="end">500g</text>
+
+  <!-- Item 5 - pendiente -->
+  <rect x="16" y="392" width="358" height="52" rx="12" fill="#ffffff"/>
+  <circle cx="40" cy="418" r="10" fill="none" stroke="#e8e4dc" stroke-width="1.5"/>
+  <text x="60" y="423" font-family="Nunito, sans-serif" font-size="15" font-weight="400" fill="#1a1a1a">Limón</text>
+  <text x="358" y="423" font-family="Nunito, sans-serif" font-size="13" font-weight="400" fill="#7a7a72" text-anchor="end">4 uds</text>
+
+  <!-- Sección: PROTEÍNAS -->
+  <text x="16" y="472" font-family="Nunito, sans-serif" font-size="12" font-weight="600" fill="#7a7a72" letter-spacing="0.2">PROTEÍNAS</text>
+
+  <!-- Item 6 - TACHADO -->
+  <rect x="16" y="484" width="358" height="52" rx="12" fill="#f5f0e8"/>
+  <circle cx="40" cy="510" r="10" fill="#2d7a4f"/>
+  <text x="36" y="514" font-family="Nunito, sans-serif" font-size="12" font-weight="700" fill="#ffffff" text-anchor="middle">✓</text>
+  <text x="60" y="515" font-family="Nunito, sans-serif" font-size="15" font-weight="400" fill="#7a7a72" text-decoration="line-through">Pechuga de pollo</text>
+  <text x="358" y="515" font-family="Nunito, sans-serif" font-size="13" font-weight="400" fill="#a8a8a0" text-anchor="end">800g</text>
+
+  <!-- Item 7 - pendiente -->
+  <rect x="16" y="544" width="358" height="52" rx="12" fill="#ffffff"/>
+  <circle cx="40" cy="570" r="10" fill="none" stroke="#e8e4dc" stroke-width="1.5"/>
+  <text x="60" y="575" font-family="Nunito, sans-serif" font-size="15" font-weight="400" fill="#1a1a1a">Huevos</text>
+  <text x="358" y="575" font-family="Nunito, sans-serif" font-size="13" font-weight="400" fill="#7a7a72" text-anchor="end">12 uds</text>
+
+  <!-- Item 8 - TACHADO -->
+  <rect x="16" y="604" width="358" height="52" rx="12" fill="#f5f0e8"/>
+  <circle cx="40" cy="630" r="10" fill="#2d7a4f"/>
+  <text x="36" y="634" font-family="Nunito, sans-serif" font-size="12" font-weight="700" fill="#ffffff" text-anchor="middle">✓</text>
+  <text x="60" y="635" font-family="Nunito, sans-serif" font-size="15" font-weight="400" fill="#7a7a72" text-decoration="line-through">Garbanzos</text>
+  <text x="358" y="635" font-family="Nunito, sans-serif" font-size="13" font-weight="400" fill="#a8a8a0" text-anchor="end">400g</text>
+
+  <!-- Sección: LÁCTEOS -->
+  <text x="16" y="684" font-family="Nunito, sans-serif" font-size="12" font-weight="600" fill="#7a7a72" letter-spacing="0.2">LÁCTEOS</text>
+
+  <!-- Item 9 - pendiente -->
+  <rect x="16" y="696" width="358" height="52" rx="12" fill="#ffffff"/>
+  <circle cx="40" cy="722" r="10" fill="none" stroke="#e8e4dc" stroke-width="1.5"/>
+  <text x="60" y="727" font-family="Nunito, sans-serif" font-size="15" font-weight="400" fill="#1a1a1a">Yogur natural</text>
+  <text x="358" y="727" font-family="Nunito, sans-serif" font-size="13" font-weight="400" fill="#7a7a72" text-anchor="end">6 uds</text>
+
+  <!-- Item 10 - TACHADO -->
+  <rect x="16" y="756" width="358" height="52" rx="12" fill="#f5f0e8"/>
+  <circle cx="40" cy="782" r="10" fill="#2d7a4f"/>
+  <text x="36" y="786" font-family="Nunito, sans-serif" font-size="12" font-weight="700" fill="#ffffff" text-anchor="middle">✓</text>
+  <text x="60" y="787" font-family="Nunito, sans-serif" font-size="15" font-weight="400" fill="#7a7a72" text-decoration="line-through">Leche</text>
+  <text x="358" y="787" font-family="Nunito, sans-serif" font-size="13" font-weight="400" fill="#a8a8a0" text-anchor="end">2L</text>
+
+  <!-- Tab Bar -->
+  <rect x="0" y="840" width="390" height="60" fill="#ffffff"/>
+  <line x1="0" y1="840" x2="390" y2="840" stroke="#e8e4dc" stroke-width="1"/>
+  
+  <!-- Tab: Plan (inactivo) -->
+  <g transform="translate(36,852)">
+    <rect x="0" y="0" width="16" height="14" rx="2" fill="none" stroke="#1a1a1a" stroke-width="1.5"/>
+    <line x1="0" y1="4" x2="16" y2="4" stroke="#1a1a1a" stroke-width="1.5"/>
+    <line x1="5" y1="0" x2="5" y2="4" stroke="#1a1a1a" stroke-width="1.5"/>
+    <line x1="11" y1="0" x2="11" y2="4" stroke="#1a1a1a" stroke-width="1.5"/>
+  </g>
+  <text x="48" y="886" font-family="Nunito, sans-serif" font-size="11" font-weight="500" fill="#7a7a72" text-anchor="middle">Plan</text>
+  
+  <!-- Tab: Recetas (inactivo) -->
+  <g transform="translate(134,852)">
+    <rect x="0" y="0" width="14" height="14" rx="2" fill="none" stroke="#1a1a1a" stroke-width="1.5"/>
+    <line x1="3" y1="4" x2="11" y2="4" stroke="#1a1a1a" stroke-width="1.5"/>
+    <line x1="3" y1="7" x2="11" y2="7" stroke="#1a1a1a" stroke-width="1.5"/>
+    <line x1="3" y1="10" x2="8" y2="10" stroke="#1a1a1a" stroke-width="1.5"/>
+  </g>
+  <text x="146" y="886" font-family="Nunito, sans-serif" font-size="11" font-weight="500" fill="#7a7a72" text-anchor="middle">Recetas</text>
+  
+  <!-- Tab: Compra (activo - verde relleno) -->
+  <g transform="translate(232,852)">
+    <circle cx="4" cy="14" r="1.5" fill="#2d7a4f" stroke="#2d7a4f" stroke-width="1.5"/>
+    <circle cx="12" cy="14" r="1.5" fill="#2d7a4f" stroke="#2d7a4f" stroke-width="1.5"/>
+    <path d="M0,0 L2,0 L4,10 L14,10 L16,3 L5,3" fill="#2d7a4f" stroke="#2d7a4f" stroke-width="1.5"/>
+  </g>
+  <text x="244" y="886" font-family="Nunito, sans-serif" font-size="11" font-weight="500" fill="#2d7a4f" text-anchor="middle">Compra</text>
+  
+  <!-- Tab: Familia (inactivo) -->
+  <g transform="translate(330,852)">
+    <circle cx="7" cy="4" r="3" fill="none" stroke="#1a1a1a" stroke-width="1.5"/>
+    <path d="M0,14 C0,10 4,8 7,8 C10,8 14,10 14,14" fill="none" stroke="#1a1a1a" stroke-width="1.5"/>
+  </g>
+  <text x="342" y="886" font-family="Nunito, sans-serif" font-size="11" font-weight="500" fill="#7a7a72" text-anchor="middle">Familia</text>
+</svg>

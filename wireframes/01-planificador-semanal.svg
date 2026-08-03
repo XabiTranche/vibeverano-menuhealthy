@@ -1,0 +1,149 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 390 844" width="390" height="844">
+  <!-- Fondo canvas crema -->
+  <rect width="390" height="844" fill="#faf8f5"/>
+
+  <!-- Status bar simulada -->
+  <rect width="390" height="44" fill="#faf8f5"/>
+  <text x="195" y="30" font-family="Nunito, sans-serif" font-size="12" font-weight="600" fill="#1a1a1a" text-anchor="middle">9:41</text>
+
+  <!-- Week Selector con indicador de estado -->
+  <rect x="16" y="56" width="358" height="48" rx="16" fill="#ffffff"/>
+  <text x="40" y="85" font-family="Nunito, sans-serif" font-size="18" font-weight="600" fill="#1a1a1a">←</text>
+  <text x="195" y="79" font-family="Nunito, sans-serif" font-size="16" font-weight="600" fill="#1a1a1a" text-anchor="middle">Semana del 4 al 10 ago</text>
+  <!-- Badge estado: Borrador -->
+  <rect x="145" y="86" width="100" height="18" rx="9" fill="#e8f5ee"/>
+  <text x="195" y="98" font-family="Nunito, sans-serif" font-size="10" font-weight="600" fill="#2d7a4f" text-anchor="middle">● En borrador</text>
+  <text x="350" y="85" font-family="Nunito, sans-serif" font-size="18" font-weight="600" fill="#1a1a1a" text-anchor="end">→</text>
+
+  <!-- Título pantalla -->
+  <text x="16" y="136" font-family="Nunito, sans-serif" font-size="28" font-weight="700" fill="#1a1a1a">Mi semana</text>
+
+  <!-- LUNES -->
+  <text x="16" y="176" font-family="Nunito, sans-serif" font-size="18" font-weight="600" fill="#1a1a1a">Lunes 4</text>
+
+  <!-- Slot Desayuno (relleno) con icono sustituir -->
+  <rect x="16" y="188" width="358" height="64" rx="16" fill="#ffffff"/>
+  <rect x="16" y="188" width="358" height="64" rx="16" fill="none" stroke="#e8e4dc" stroke-width="0.5"/>
+  <!-- Barra lateral naranja (desayuno) -->
+  <rect x="16" y="192" width="4" height="56" rx="2" fill="#f5a623"/>
+  <!-- Contenido -->
+  <text x="32" y="214" font-family="Nunito, sans-serif" font-size="16" font-weight="600" fill="#1a1a1a">Tostadas con aguacate y huevo</text>
+  <rect x="32" y="224" width="64" height="22" rx="11" fill="#e8f5ee"/>
+  <text x="64" y="239" font-family="Nunito, sans-serif" font-size="11" font-weight="500" fill="#2d7a4f" text-anchor="middle">320 kcal</text>
+  <rect x="102" y="224" width="60" height="22" rx="11" fill="#e8f5ee"/>
+  <text x="132" y="239" font-family="Nunito, sans-serif" font-size="11" font-weight="500" fill="#2d7a4f" text-anchor="middle">12g prot</text>
+  <!-- Icono sustituir (flechas circulares) -->
+  <circle cx="350" cy="220" r="14" fill="#f5f0e8"/>
+  <text x="350" y="225" font-family="Nunito, sans-serif" font-size="14" fill="#7a7a72" text-anchor="middle">⇄</text>
+
+  <!-- Slot Comida (relleno) con icono sustituir -->
+  <rect x="16" y="264" width="358" height="64" rx="16" fill="#ffffff"/>
+  <rect x="16" y="264" width="358" height="64" rx="16" fill="none" stroke="#e8e4dc" stroke-width="0.5"/>
+  <!-- Barra lateral verde (comida) -->
+  <rect x="16" y="268" width="4" height="56" rx="2" fill="#2d7a4f"/>
+  <text x="32" y="290" font-family="Nunito, sans-serif" font-size="16" font-weight="600" fill="#1a1a1a">Pollo al limón con arroz</text>
+  <rect x="32" y="300" width="64" height="22" rx="11" fill="#e8f5ee"/>
+  <text x="64" y="315" font-family="Nunito, sans-serif" font-size="11" font-weight="500" fill="#2d7a4f" text-anchor="middle">485 kcal</text>
+  <rect x="102" y="300" width="60" height="22" rx="11" fill="#e8f5ee"/>
+  <text x="132" y="315" font-family="Nunito, sans-serif" font-size="11" font-weight="500" fill="#2d7a4f" text-anchor="middle">35g prot</text>
+  <!-- Icono sustituir -->
+  <circle cx="350" cy="296" r="14" fill="#f5f0e8"/>
+  <text x="350" y="301" font-family="Nunito, sans-serif" font-size="14" fill="#7a7a72" text-anchor="middle">⇄</text>
+
+  <!-- Slot Cena (vacío) -->
+  <rect x="16" y="340" width="358" height="56" rx="16" fill="#f5f0e8"/>
+  <text x="195" y="373" font-family="Nunito, sans-serif" font-size="13" font-weight="400" fill="#7a7a72" text-anchor="middle">+ Añadir cena</text>
+
+  <!-- Separador -->
+  <line x1="16" y1="416" x2="374" y2="416" stroke="#e8e4dc" stroke-width="1" stroke-dasharray="4,4"/>
+
+  <!-- MARTES -->
+  <text x="16" y="444" font-family="Nunito, sans-serif" font-size="18" font-weight="600" fill="#1a1a1a">Martes 5</text>
+
+  <!-- Slot Desayuno (relleno) con icono sustituir -->
+  <rect x="16" y="456" width="358" height="64" rx="16" fill="#ffffff"/>
+  <rect x="16" y="456" width="358" height="64" rx="16" fill="none" stroke="#e8e4dc" stroke-width="0.5"/>
+  <rect x="16" y="460" width="4" height="56" rx="2" fill="#f5a623"/>
+  <text x="32" y="482" font-family="Nunito, sans-serif" font-size="16" font-weight="600" fill="#1a1a1a">Yogur con granola y frutos rojos</text>
+  <rect x="32" y="492" width="64" height="22" rx="11" fill="#e8f5ee"/>
+  <text x="64" y="507" font-family="Nunito, sans-serif" font-size="11" font-weight="500" fill="#2d7a4f" text-anchor="middle">280 kcal</text>
+  <rect x="102" y="492" width="56" height="22" rx="11" fill="#e8f5ee"/>
+  <text x="130" y="507" font-family="Nunito, sans-serif" font-size="11" font-weight="500" fill="#2d7a4f" text-anchor="middle">8g prot</text>
+  <!-- Icono sustituir -->
+  <circle cx="350" cy="488" r="14" fill="#f5f0e8"/>
+  <text x="350" y="493" font-family="Nunito, sans-serif" font-size="14" fill="#7a7a72" text-anchor="middle">⇄</text>
+
+  <!-- Slot Comida (relleno) con icono sustituir -->
+  <rect x="16" y="532" width="358" height="64" rx="16" fill="#ffffff"/>
+  <rect x="16" y="532" width="358" height="64" rx="16" fill="none" stroke="#e8e4dc" stroke-width="0.5"/>
+  <rect x="16" y="536" width="4" height="56" rx="2" fill="#2d7a4f"/>
+  <text x="32" y="558" font-family="Nunito, sans-serif" font-size="16" font-weight="600" fill="#1a1a1a">Ensalada mediterránea</text>
+  <rect x="32" y="568" width="64" height="22" rx="11" fill="#e8f5ee"/>
+  <text x="64" y="583" font-family="Nunito, sans-serif" font-size="11" font-weight="500" fill="#2d7a4f" text-anchor="middle">310 kcal</text>
+  <rect x="102" y="568" width="60" height="22" rx="11" fill="#e8f5ee"/>
+  <text x="132" y="583" font-family="Nunito, sans-serif" font-size="11" font-weight="500" fill="#2d7a4f" text-anchor="middle">18g prot</text>
+  <!-- Icono sustituir -->
+  <circle cx="350" cy="564" r="14" fill="#f5f0e8"/>
+  <text x="350" y="569" font-family="Nunito, sans-serif" font-size="14" fill="#7a7a72" text-anchor="middle">⇄</text>
+
+  <!-- Slot Cena (relleno) con icono sustituir -->
+  <rect x="16" y="608" width="358" height="64" rx="16" fill="#ffffff"/>
+  <rect x="16" y="608" width="358" height="64" rx="16" fill="none" stroke="#e8e4dc" stroke-width="0.5"/>
+  <rect x="16" y="612" width="4" height="56" rx="2" fill="#5b4fa0"/>
+  <text x="32" y="634" font-family="Nunito, sans-serif" font-size="16" font-weight="600" fill="#1a1a1a">Sopa de verduras con quinoa</text>
+  <rect x="32" y="644" width="64" height="22" rx="11" fill="#e8f5ee"/>
+  <text x="64" y="659" font-family="Nunito, sans-serif" font-size="11" font-weight="500" fill="#2d7a4f" text-anchor="middle">245 kcal</text>
+  <rect x="102" y="644" width="60" height="22" rx="11" fill="#e8f5ee"/>
+  <text x="132" y="659" font-family="Nunito, sans-serif" font-size="11" font-weight="500" fill="#2d7a4f" text-anchor="middle">14g prot</text>
+  <!-- Icono sustituir -->
+  <circle cx="350" cy="640" r="14" fill="#f5f0e8"/>
+  <text x="350" y="645" font-family="Nunito, sans-serif" font-size="14" fill="#7a7a72" text-anchor="middle">⇄</text>
+
+  <!-- Slot Snack (vacío) -->
+  <rect x="16" y="684" width="358" height="56" rx="16" fill="#f5f0e8"/>
+  <text x="195" y="717" font-family="Nunito, sans-serif" font-size="13" font-weight="400" fill="#7a7a72" text-anchor="middle">+ Añadir snack</text>
+
+  <!-- Botón Aprobar Semana (rectangular) -->
+  <rect x="16" y="756" width="358" height="48" rx="12" fill="#2d7a4f"/>
+  <text x="195" y="785" font-family="Nunito, sans-serif" font-size="15" font-weight="700" fill="#ffffff" text-anchor="middle">Aprobar semana</text>
+
+  <!-- Tab Bar -->
+  <rect x="0" y="788" width="390" height="56" fill="#ffffff"/>
+  <line x1="0" y1="788" x2="390" y2="788" stroke="#e8e4dc" stroke-width="1"/>
+  
+  <!-- Tab: Plan (activo - verde relleno) -->
+  <g transform="translate(36,800)">
+    <rect x="0" y="0" width="16" height="14" rx="2" fill="#2d7a4f" stroke="#2d7a4f" stroke-width="1.5"/>
+    <line x1="0" y1="4" x2="16" y2="4" stroke="#ffffff" stroke-width="1.5"/>
+    <line x1="5" y1="0" x2="5" y2="4" stroke="#ffffff" stroke-width="1.5"/>
+    <line x1="11" y1="0" x2="11" y2="4" stroke="#ffffff" stroke-width="1.5"/>
+  </g>
+  <text x="48" y="834" font-family="Nunito, sans-serif" font-size="11" font-weight="500" fill="#2d7a4f" text-anchor="middle">Plan</text>
+  
+  <!-- Tab: Recetas (inactivo - ink) -->
+  <g transform="translate(134,800)">
+    <rect x="0" y="0" width="14" height="14" rx="2" fill="none" stroke="#1a1a1a" stroke-width="1.5"/>
+    <line x1="3" y1="4" x2="11" y2="4" stroke="#1a1a1a" stroke-width="1.5"/>
+    <line x1="3" y1="7" x2="11" y2="7" stroke="#1a1a1a" stroke-width="1.5"/>
+    <line x1="3" y1="10" x2="8" y2="10" stroke="#1a1a1a" stroke-width="1.5"/>
+  </g>
+  <text x="146" y="834" font-family="Nunito, sans-serif" font-size="11" font-weight="500" fill="#7a7a72" text-anchor="middle">Recetas</text>
+  
+  <!-- Tab: Compra (inactivo - ink) -->
+  <g transform="translate(232,800)">
+    <circle cx="4" cy="14" r="1.5" fill="none" stroke="#1a1a1a" stroke-width="1.5"/>
+    <circle cx="12" cy="14" r="1.5" fill="none" stroke="#1a1a1a" stroke-width="1.5"/>
+    <path d="M0,0 L2,0 L4,10 L14,10 L16,3 L5,3" fill="none" stroke="#1a1a1a" stroke-width="1.5"/>
+  </g>
+  <text x="244" y="834" font-family="Nunito, sans-serif" font-size="11" font-weight="500" fill="#7a7a72" text-anchor="middle">Compra</text>
+  
+  <!-- Tab: Familia (inactivo - ink) -->
+  <g transform="translate(330,800)">
+    <circle cx="7" cy="4" r="3" fill="none" stroke="#1a1a1a" stroke-width="1.5"/>
+    <path d="M0,14 C0,10 4,8 7,8 C10,8 14,10 14,14" fill="none" stroke="#1a1a1a" stroke-width="1.5"/>
+  </g>
+  <text x="342" y="834" font-family="Nunito, sans-serif" font-size="11" font-weight="500" fill="#7a7a72" text-anchor="middle">Familia</text>
+
+  <!-- Leyenda -->
+  <rect x="16" y="850" width="358" height="80" rx="8" fill="#ffffff" stroke="#e8e4dc" stroke-width="0.5" visibility="hidden"/>
+</svg>

@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>MenuFamiliaresHealthy — Prototipo</title>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --color-primary: #2d7a4f;
+      --color-primary-pressed: #236b42;
+      --color-primary-soft: #e8f5ee;
+      --color-on-primary: #ffffff;
+      --color-canvas: #faf8f5;
+      --color-surface: #ffffff;
+      --color-surface-warm: #f5f0e8;
+      --color-ink: #1a1a1a;
+      --color-body: #3d3d3d;
+      --color-muted: #7a7a72;
+      --color-muted-soft: #a8a8a0;
+      --color-hairline: #e8e4dc;
+      --color-category-breakfast: #f5a623;
+      --color-category-lunch: #2d7a4f;
+      --color-category-dinner: #5b4fa0;
+      --color-category-snack: #d4763a;
+      --color-success: #2a9d4e;
+      --color-warning: #e6a817;
+      --color-error: #c53030;
+      --rounded-sm: 8px;
+      --rounded-md: 12px;
+      --rounded-lg: 16px;
+      --rounded-full: 9999px;
+      --spacing-sm: 8px;
+      --spacing-md: 12px;
+      --spacing-lg: 16px;
+      --spacing-xl: 24px;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Nunito', sans-serif; background: var(--color-canvas); color: var(--color-ink); max-width: 390px; margin: 0 auto; min-height: 100vh; -webkit-font-smoothing: antialiased; }
+    .page { display: none; padding: 16px 16px 80px; }
+    .page.active { display: block; }
+    .screen-title { font-size: 28px; font-weight: 700; line-height: 1.2; letter-spacing: -0.3px; margin: 16px 0 24px; }
+
+    /* Week Selector */
+    .week-selector { background: var(--color-surface); border-radius: var(--rounded-lg); padding: 12px 16px; display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.04); }
+    .week-arrow { font-size: 20px; color: var(--color-ink); cursor: pointer; padding: 8px; border: none; background: none; }
+    .week-center { text-align: center; }
+    .week-label { font-size: 16px; font-weight: 600; }
+    .status-badge { display: inline-block; font-size: 11px; font-weight: 600; padding: 2px 10px; border-radius: var(--rounded-full); margin-top: 4px; }
+    .status-badge--draft { background: var(--color-primary-soft); color: var(--color-primary); }
+
+    /* Day */
+    .day-section { margin-bottom: 24px; }
+    .day-header { font-size: 18px; font-weight: 600; padding: 8px 0; }
+    .day-sep { border: none; border-top: 1px dashed var(--color-hairline); margin: 24px 0 16px; }
+
+    /* Meal Slot */
+    .meal-slot { background: var(--color-surface); border-radius: var(--rounded-lg); padding: 12px 16px; margin-bottom: 8px; min-height: 52px; display: flex; align-items: center; box-shadow: 0 1px 3px rgba(0,0,0,0.04), 0 1px 2px rgba(0,0,0,0.03); position: relative; cursor: pointer; }
+    .meal-slot::before { content: ''; position: absolute; left: 0; top: 8px; bottom: 8px; width: 4px; border-radius: 2px; }
+    .meal-slot--breakfast::before { background: var(--color-category-breakfast); }
+    .meal-slot--lunch::before { background: var(--color-category-lunch); }
+    .meal-slot--dinner::before { background: var(--color-category-dinner); }
+    .meal-slot--snack::before { background: var(--color-category-snack); }
+    .meal-slot--empty { background: var(--color-surface-warm); box-shadow: none; justify-content: center; }
+    .meal-slot--empty::before { display: none; }
+    .meal-content { flex: 1; padding-left: 8px; }
+    .meal-slot--empty .meal-content { text-align: center; padding-left: 0; }
+    .meal-name { font-size: 16px; font-weight: 600; margin-bottom: 4px; }
+    .empty-text { font-size: 13px; font-weight: 400; color: var(--color-muted); }
+    .meal-badges { display: flex; gap: 8px; flex-wrap: wrap; }
+    .badge-nutrient { font-size: 11px; font-weight: 500; padding: 4px 10px; border-radius: var(--rounded-full); background: var(--color-primary-soft); color: var(--color-primary); }
+    .badge-time { font-size: 11px; font-weight: 500; padding: 4px 10px; border-radius: var(--rounded-full); background: var(--color-surface-warm); color: var(--color-muted); }
+    .btn-swap { width: 28px; height: 28px; border-radius: 50%; background: var(--color-surface-warm); display: flex; align-items: center; justify-content: center; font-size: 14px; color: var(--color-muted); cursor: pointer; border: none; flex-shrink: 0; }
+
+    /* Buttons */
+    .btn-primary { display: block; width: 100%; background: var(--color-primary); color: var(--color-on-primary); font-family: 'Nunito', sans-serif; font-size: 15px; font-weight: 700; border: none; border-radius: var(--rounded-md); padding: 14px 24px; height: 48px; cursor: pointer; margin-top: 24px; }
+    .btn-primary:active { background: var(--color-primary-pressed); }
+    .btn-secondary { display: block; width: 100%; background: var(--color-surface); color: var(--color-primary); font-family: 'Nunito', sans-serif; font-size: 15px; font-weight: 700; border: 1.5px solid var(--color-primary); border-radius: var(--rounded-md); padding: 14px 24px; height: 48px; cursor: pointer; }
+    .btn-danger { display: inline-block; background: var(--color-surface); color: var(--color-error); font-family: 'Nunito', sans-serif; font-size: 14px; font-weight: 700; border: 1.5px solid var(--color-error); border-radius: var(--rounded-md); padding: 12px 24px; height: 44px; cursor: pointer; }
+    .btn-danger--disabled { opacity: 0.4; pointer-events: none; }
+    .btn-back { background: none; border: none; font-family: 'Nunito', sans-serif; font-size: 15px; font-weight: 700; color: var(--color-primary); cursor: pointer; padding: 8px 0; }
+    .btn-row { display: flex; gap: 12px; margin-top: 12px; }
+    .btn-row > * { flex: 1; text-align: center; }
+
+    /* Search & Chips */
+    .search-bar { background: var(--color-surface-warm); border-radius: var(--rounded-md); padding: 12px 20px; font-size: 15px; color: var(--color-muted); margin-bottom: 16px; }
+    .filter-row { display: flex; gap: 8px; align-items: center; margin-bottom: 16px; flex-wrap: wrap; }
+    .chip { font-size: 12px; font-weight: 600; padding: 8px 14px; border-radius: var(--rounded-md); background: var(--color-surface-warm); color: var(--color-body); cursor: pointer; }
+    .chip--active { background: var(--color-primary); color: var(--color-on-primary); }
+    .btn-filter { width: 36px; height: 32px; border-radius: var(--rounded-md); background: var(--color-surface-warm); border: none; cursor: pointer; font-size: 16px; display: flex; align-items: center; justify-content: center; margin-left: auto; }
+
+    /* Recipe Cards */
+    .recipe-card { background: var(--color-surface); border-radius: var(--rounded-lg); padding: 16px; margin-bottom: 12px; display: flex; align-items: flex-start; box-shadow: 0 1px 3px rgba(0,0,0,0.04); cursor: pointer; position: relative; }
+    .recipe-photo { width: 64px; height: 64px; border-radius: var(--rounded-md); flex-shrink: 0; margin-right: 12px; display: flex; align-items: center; justify-content: center; font-size: 28px; }
+    .recipe-bar { width: 4px; border-radius: 2px; min-height: 60px; flex-shrink: 0; margin-right: 4px; position: absolute; left: 0; top: 16px; bottom: 16px; }
+    .recipe-bar--breakfast { background: var(--color-category-breakfast); }
+    .recipe-bar--lunch { background: var(--color-category-lunch); }
+    .recipe-bar--dinner { background: var(--color-category-dinner); }
+    .recipe-bar--snack { background: var(--color-category-snack); }
+    .recipe-content { flex: 1; }
+    .recipe-name { font-size: 16px; font-weight: 600; margin-bottom: 6px; }
+    .recipe-tags { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 8px; }
+    .tag { font-size: 10px; font-weight: 600; padding: 4px 10px; border-radius: var(--rounded-md); background: var(--color-surface-warm); color: var(--color-body); }
+    .recipe-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--color-primary); position: absolute; top: 12px; right: 12px; }
+
+    /* Detail */
+    .section-sep { border: none; border-top: 1px solid var(--color-hairline); margin: 16px 0; }
+    .section-title { font-size: 16px; font-weight: 600; margin-bottom: 12px; }
+    .detail-image { width: 100%; height: 180px; border-radius: var(--rounded-lg); display: flex; align-items: center; justify-content: center; font-size: 56px; margin-bottom: 16px; }
+    .nutri-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-bottom: 16px; }
+    .nutri-box { background: var(--color-surface); border: 1px solid var(--color-hairline); border-radius: var(--rounded-md); padding: 10px 8px; text-align: center; }
+    .nutri-value { font-size: 18px; font-weight: 700; color: var(--color-ink); }
+    .nutri-label { font-size: 11px; font-weight: 500; color: var(--color-muted); }
+    .ingredient-list { list-style: none; padding: 0; margin-bottom: 16px; }
+    .ingredient-list li { font-size: 15px; color: var(--color-body); padding: 6px 0; border-bottom: 1px solid var(--color-hairline); }
+    .ingredient-list li:last-child { border-bottom: none; }
+    .compat-item { background: var(--color-surface); border: 0.5px solid var(--color-hairline); border-radius: 8px; padding: 10px 16px; margin-bottom: 8px; font-size: 13px; display: flex; align-items: center; gap: 8px; }
+    .compat-tick { color: var(--color-primary); font-weight: 700; }
+    .in-use-banner { background: var(--color-primary-soft); border-radius: 8px; padding: 10px 16px; font-size: 13px; font-weight: 600; color: var(--color-primary); margin-bottom: 16px; }
+
+    /* Shopping */
+    .compra-meta { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
+    .compra-subtitle { font-size: 13px; color: var(--color-muted); }
+    .compra-counter { font-size: 13px; font-weight: 600; color: var(--color-primary); }
+    .category-header { font-size: 12px; font-weight: 600; color: var(--color-muted); letter-spacing: 0.2px; margin: 16px 0 8px; text-transform: uppercase; }
+    .shop-item { background: var(--color-surface); border-radius: var(--rounded-md); padding: 14px 16px; min-height: 52px; display: flex; align-items: center; margin-bottom: 8px; cursor: pointer; transition: all 0.2s; }
+    .shop-check { width: 20px; height: 20px; border-radius: 50%; border: 1.5px solid var(--color-hairline); margin-right: 12px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-size: 12px; }
+    .shop-name { flex: 1; font-size: 15px; }
+    .shop-qty { font-size: 13px; color: var(--color-muted); }
+    .shop-item--checked { background: var(--color-surface-warm); }
+    .shop-item--checked .shop-check { background: var(--color-primary); border-color: var(--color-primary); color: white; }
+    .shop-item--checked .shop-check::after { content: '✓'; }
+    .shop-item--checked .shop-name { color: var(--color-muted); text-decoration: line-through; }
+    .shop-item--checked .shop-qty { color: var(--color-muted-soft); }
+
+    /* Family */
+    .family-banner { padding: 10px 16px; border-radius: 8px; font-size: 13px; font-weight: 600; text-align: center; margin-bottom: 16px; }
+    .family-banner--ok { background: var(--color-primary-soft); color: var(--color-primary); }
+    .member-card { background: var(--color-surface); border-radius: var(--rounded-lg); padding: 16px; margin-bottom: 12px; display: flex; align-items: center; box-shadow: 0 1px 3px rgba(0,0,0,0.04); }
+    .member-avatar { width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 16px; font-weight: 700; flex-shrink: 0; margin-right: 12px; }
+    .member-avatar--primary { background: var(--color-primary-soft); color: var(--color-primary); }
+    .member-avatar--default { background: var(--color-surface-warm); color: var(--color-muted); }
+    .member-info { flex: 1; }
+    .member-name { font-size: 16px; font-weight: 600; }
+    .member-goal { font-size: 13px; color: var(--color-body); margin: 2px 0 6px; }
+    .member-arrow { font-size: 18px; color: var(--color-muted-soft); }
+    .restriction-item { background: var(--color-surface); border-radius: 8px; padding: 12px 16px; font-size: 14px; color: var(--color-body); margin-bottom: 8px; }
+    .meals-chips { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 8px; }
+
+    /* Tab Bar */
+    .tab-bar { position: fixed; bottom: 0; left: 50%; transform: translateX(-50%); width: 100%; max-width: 390px; height: 56px; background: var(--color-surface); border-top: 1px solid var(--color-hairline); display: flex; align-items: center; justify-content: space-around; z-index: 100; }
+    .tab-item { display: flex; flex-direction: column; align-items: center; gap: 2px; text-decoration: none; cursor: pointer; }
+    .tab-icon { width: 20px; height: 16px; }
+    .tab-icon svg { width: 100%; height: 100%; }
+    .tab-label { font-size: 11px; font-weight: 500; color: var(--color-muted); }
+    .tab-item--active .tab-label { color: var(--color-primary); }
+  </style>
+</head>
+<body>
+
+  <!-- PAGE 1: PLANIFICADOR SEMANAL -->
+  <div class="page active" id="page-plan">
+    <div class="week-selector">
+      <button class="week-arrow">←</button>
+      <div class="week-center">
+        <div class="week-label">Semana del 4 al 10 ago</div>
+        <span class="status-badge status-badge--draft">● En borrador</span>
+      </div>
+      <button class="week-arrow">→</button>
+    </div>
+    <h1 class="screen-title">Mi semana</h1>
+    <div class="day-section">
+      <h2 class="day-header">Lunes 4</h2>
+      <div class="meal-slot meal-slot--breakfast"><div class="meal-content"><div class="meal-name">Tostadas con aguacate y huevo</div><div class="meal-badges"><span class="badge-nutrient">320 kcal</span><span class="badge-nutrient">12g prot</span><span class="badge-time">10 min</span></div></div><button class="btn-swap">⇄</button></div>
+      <div class="meal-slot meal-slot--lunch" onclick="showPage('page-detalle')"><div class="meal-content"><div class="meal-name">Pollo al limón con arroz</div><div class="meal-badges"><span class="badge-nutrient">485 kcal</span><span class="badge-nutrient">35g prot</span><span class="badge-time">30 min</span></div></div><button class="btn-swap">⇄</button></div>
+      <div class="meal-slot meal-slot--dinner"><div class="meal-content"><div class="meal-name">Sopa de verduras con quinoa</div><div class="meal-badges"><span class="badge-nutrient">245 kcal</span><span class="badge-nutrient">14g prot</span><span class="badge-time">25 min</span></div></div><button class="btn-swap">⇄</button></div>
+      <div class="meal-slot meal-slot--empty"><div class="meal-content"><div class="meal-name empty-text">+ Añadir snack</div></div></div>
+    </div>
+    <hr class="day-sep">
+    <div class="day-section">
+      <h2 class="day-header">Martes 5</h2>
+      <div class="meal-slot meal-slot--breakfast"><div class="meal-content"><div class="meal-name">Yogur con granola y frutos rojos</div><div class="meal-badges"><span class="badge-nutrient">280 kcal</span><span class="badge-nutrient">8g prot</span><span class="badge-time">5 min</span></div></div><button class="btn-swap">⇄</button></div>
+      <div class="meal-slot meal-slot--lunch"><div class="meal-content"><div class="meal-name">Ensalada mediterránea</div><div class="meal-badges"><span class="badge-nutrient">310 kcal</span><span class="badge-nutrient">18g prot</span><span class="badge-time">15 min</span></div></div><button class="btn-swap">⇄</button></div>
+      <div class="meal-slot meal-slot--empty"><div class="meal-content"><div class="meal-name empty-text">+ Añadir cena</div></div></div>
+    </div>
+    <hr class="day-sep">
+    <div class="day-section">
+      <h2 class="day-header">Miércoles 6</h2>
+      <div class="meal-slot meal-slot--breakfast"><div class="meal-content"><div class="meal-name">Smoothie de espinacas y plátano</div><div class="meal-badges"><span class="badge-nutrient">210 kcal</span><span class="badge-nutrient">6g prot</span><span class="badge-time">5 min</span></div></div><button class="btn-swap">⇄</button></div>
+      <div class="meal-slot meal-slot--empty"><div class="meal-content"><div class="meal-name empty-text">+ Añadir comida</div></div></div>
+      <div class="meal-slot meal-slot--empty"><div class="meal-content"><div class="meal-name empty-text">+ Añadir cena</div></div></div>
+    </div>
+    <button class="btn-primary">Aprobar semana</button>
+  </div>
+
+  <!-- PAGE 2: CATÁLOGO DE RECETAS -->
+  <div class="page" id="page-recetas">
+    <h1 class="screen-title">Recetas</h1>
+    <div class="search-bar">🔍  Buscar plato o ingrediente...</div>
+    <div class="filter-row">
+      <span class="chip chip--active">Comida</span>
+      <span class="chip chip--active">Sin gluten</span>
+      <button class="btn-filter">⫧</button>
+    </div>
+
+    <div class="recipe-card" onclick="showPage('page-detalle')">
+      <div class="recipe-bar recipe-bar--lunch"></div>
+      <div class="recipe-photo" style="background:#f0e0c8;">🍗</div>
+      <div class="recipe-content">
+        <div class="recipe-name">Pollo al limón con arroz</div>
+        <div class="recipe-tags"><span class="tag">Comida</span><span class="tag">Sin gluten</span></div>
+        <div class="meal-badges"><span class="badge-nutrient">485 kcal</span><span class="badge-nutrient">35g prot</span><span class="badge-time">30 min</span></div>
+      </div>
+      <div class="recipe-dot"></div>
+    </div>
+
+    <div class="recipe-card">
+      <div class="recipe-bar recipe-bar--lunch"></div>
+      <div class="recipe-photo" style="background:#d4e8c8;">🥗</div>
+      <div class="recipe-content">
+        <div class="recipe-name">Ensalada mediterránea</div>
+        <div class="recipe-tags"><span class="tag">Comida</span><span class="tag">Cena</span><span class="tag">Vegana</span></div>
+        <div class="meal-badges"><span class="badge-nutrient">310 kcal</span><span class="badge-nutrient">18g prot</span><span class="badge-time">15 min</span></div>
+      </div>
+      <div class="recipe-dot"></div>
+    </div>
+
+    <div class="recipe-card">
+      <div class="recipe-bar recipe-bar--breakfast"></div>
+      <div class="recipe-photo" style="background:#fde8d8;">🥣</div>
+      <div class="recipe-content">
+        <div class="recipe-name">Yogur con granola y frutos rojos</div>
+        <div class="recipe-tags"><span class="tag">Desayuno</span><span class="tag">Vegetariana</span></div>
+        <div class="meal-badges"><span class="badge-nutrient">280 kcal</span><span class="badge-nutrient">8g prot</span><span class="badge-time">5 min</span></div>
+      </div>
+    </div>
+
+    <div class="recipe-card">
+      <div class="recipe-bar recipe-bar--dinner"></div>
+      <div class="recipe-photo" style="background:#e8dcc8;">🍲</div>
+      <div class="recipe-content">
+        <div class="recipe-name">Sopa de verduras con quinoa</div>
+        <div class="recipe-tags"><span class="tag">Cena</span><span class="tag">Vegana</span><span class="tag">Sin gluten</span></div>
+        <div class="meal-badges"><span class="badge-nutrient">245 kcal</span><span class="badge-nutrient">14g prot</span><span class="badge-time">25 min</span></div>
+      </div>
+    </div>
+
+    <div class="recipe-card">
+      <div class="recipe-bar recipe-bar--snack"></div>
+      <div class="recipe-photo" style="background:#f5e8d0;">🥕</div>
+      <div class="recipe-content">
+        <div class="recipe-name">Hummus con palitos de zanahoria</div>
+        <div class="recipe-tags"><span class="tag">Snack</span><span class="tag">Vegana</span><span class="tag">Sin gluten</span></div>
+        <div class="meal-badges"><span class="badge-nutrient">180 kcal</span><span class="badge-nutrient">6g prot</span><span class="badge-time">10 min</span></div>
+      </div>
+    </div>
+
+    <button class="btn-primary">Nueva receta</button>
+  </div>
+
+  <!-- PAGE 3: DETALLE DE RECETA -->
+  <div class="page" id="page-detalle">
+    <button class="btn-back" onclick="showPage('page-recetas')">← Volver</button>
+    <h1 class="screen-title" style="margin-top:8px;">Pollo al limón con arroz</h1>
+    <div class="filter-row" style="margin-bottom:12px;">
+      <span class="chip">Comida</span>
+      <span class="chip">Sin gluten</span>
+      <span class="chip">Alta en proteína</span>
+      <span class="chip">⏱ 30 min</span>
+    </div>
+    <div class="detail-image" style="background:#f0e0c8;">🍗</div>
+    <hr class="section-sep">
+    <h3 class="section-title">Valores nutricionales</h3>
+    <div class="nutri-grid">
+      <div class="nutri-box"><div class="nutri-value">485</div><div class="nutri-label">kcal</div></div>
+      <div class="nutri-box"><div class="nutri-value">42g</div><div class="nutri-label">carbos</div></div>
+      <div class="nutri-box"><div class="nutri-value">15g</div><div class="nutri-label">grasas</div></div>
+      <div class="nutri-box"><div class="nutri-value">35g</div><div class="nutri-label">proteína</div></div>
+    </div>
+    <hr class="section-sep">
+    <h3 class="section-title">Ingredientes</h3>
+    <ul class="ingredient-list">
+      <li>Pechuga de pollo — 400g</li>
+      <li>Arroz basmati — 200g</li>
+      <li>Limón — 2 unidades</li>
+      <li>Aceite de oliva — 2 cucharadas</li>
+      <li>Ajo — 3 dientes</li>
+      <li>Caldo de pollo — 150ml</li>
+      <li>Sal y pimienta</li>
+    </ul>
+    <hr class="section-sep">
+    <h3 class="section-title">Compatibilidad familiar</h3>
+    <div class="compat-item"><span class="compat-tick">✓</span> Apto para toda la familia</div>
+    <div class="compat-item"><span class="compat-tick">✓</span> Sin alérgenos registrados</div>
+    <div class="compat-item"><span class="compat-tick">✓</span> Compatible con objetivo de Carlos (perder peso)</div>
+    <hr class="section-sep">
+    <div class="in-use-banner">📅 En uso: Lunes 4 (comida), Jueves 7 (comida)</div>
+    <button class="btn-primary" style="margin-top:0;">Añadir al plan</button>
+    <div class="btn-row">
+      <button class="btn-secondary">Editar</button>
+      <button class="btn-danger btn-danger--disabled">Eliminar</button>
+    </div>
+  </div>
+
+  <!-- PAGE 4: LISTA DE LA COMPRA -->
+  <div class="page" id="page-compra">
+    <h1 class="screen-title">Lista de la compra</h1>
+    <div class="compra-meta">
+      <span class="compra-subtitle">Semana del 4 al 10 ago</span>
+      <span class="compra-counter">3/14</span>
+    </div>
+
+    <h4 class="category-header">Verduras</h4>
+    <div class="shop-item" onclick="this.classList.toggle('shop-item--checked')"><span class="shop-check"></span><span class="shop-name">Tomates</span><span class="shop-qty">1 kg</span></div>
+    <div class="shop-item" onclick="this.classList.toggle('shop-item--checked')"><span class="shop-check"></span><span class="shop-name">Espinacas</span><span class="shop-qty">300g</span></div>
+    <div class="shop-item" onclick="this.classList.toggle('shop-item--checked')"><span class="shop-check"></span><span class="shop-name">Aguacate</span><span class="shop-qty">4 uds</span></div>
+    <div class="shop-item" onclick="this.classList.toggle('shop-item--checked')"><span class="shop-check"></span><span class="shop-name">Zanahoria</span><span class="shop-qty">500g</span></div>
+    <div class="shop-item" onclick="this.classList.toggle('shop-item--checked')"><span class="shop-check"></span><span class="shop-name">Limón</span><span class="shop-qty">4 uds</span></div>
+
+    <h4 class="category-header">Proteínas</h4>
+    <div class="shop-item shop-item--checked" onclick="this.classList.toggle('shop-item--checked')"><span class="shop-check"></span><span class="shop-name">Pechuga de pollo</span><span class="shop-qty">800g</span></div>
+    <div class="shop-item" onclick="this.classList.toggle('shop-item--checked')"><span class="shop-check"></span><span class="shop-name">Huevos</span><span class="shop-qty">12 uds</span></div>
+    <div class="shop-item shop-item--checked" onclick="this.classList.toggle('shop-item--checked')"><span class="shop-check"></span><span class="shop-name">Garbanzos</span><span class="shop-qty">400g</span></div>
+
+    <h4 class="category-header">Lácteos</h4>
+    <div class="shop-item" onclick="this.classList.toggle('shop-item--checked')"><span class="shop-check"></span><span class="shop-name">Yogur natural</span><span class="shop-qty">6 uds</span></div>
+    <div class="shop-item shop-item--checked" onclick="this.classList.toggle('shop-item--checked')"><span class="shop-check"></span><span class="shop-name">Leche</span><span class="shop-qty">2L</span></div>
+
+    <h4 class="category-header">Cereales y legumbres</h4>
+    <div class="shop-item" onclick="this.classList.toggle('shop-item--checked')"><span class="shop-check"></span><span class="shop-name">Arroz basmati</span><span class="shop-qty">500g</span></div>
+    <div class="shop-item" onclick="this.classList.toggle('shop-item--checked')"><span class="shop-check"></span><span class="shop-name">Quinoa</span><span class="shop-qty">300g</span></div>
+    <div class="shop-item" onclick="this.classList.toggle('shop-item--checked')"><span class="shop-check"></span><span class="shop-name">Granola</span><span class="shop-qty">400g</span></div>
+    <div class="shop-item" onclick="this.classList.toggle('shop-item--checked')"><span class="shop-check"></span><span class="shop-name">Pan integral</span><span class="shop-qty">1 ud</span></div>
+  </div>
+
+  <!-- PAGE 5: FAMILIA -->
+  <div class="page" id="page-familia">
+    <h1 class="screen-title">Mi familia</h1>
+    <div class="family-banner family-banner--ok">✓ Lista para planificar</div>
+
+    <h4 class="category-header">Miembros</h4>
+    <div class="member-card">
+      <div class="member-avatar member-avatar--primary">C</div>
+      <div class="member-info"><div class="member-name">Carlos (Yo)</div><div class="member-goal">Objetivo: Perder peso</div><span class="tag">🚫 Intolerancia lactosa</span></div>
+      <span class="member-arrow">›</span>
+    </div>
+    <div class="member-card">
+      <div class="member-avatar member-avatar--default">M</div>
+      <div class="member-info"><div class="member-name">María</div><div class="member-goal">Objetivo: Mantenimiento</div><span class="tag">🚫 Alergia frutos secos</span></div>
+      <span class="member-arrow">›</span>
+    </div>
+    <div class="member-card">
+      <div class="member-avatar member-avatar--default">L</div>
+      <div class="member-info"><div class="member-name">Lucas</div><div class="member-goal">8 años</div><span class="tag" style="color:var(--color-muted)">Sin restricciones</span></div>
+      <span class="member-arrow">›</span>
+    </div>
+    <div class="member-card">
+      <div class="member-avatar member-avatar--default">S</div>
+      <div class="member-info"><div class="member-name">Sofía</div><div class="member-goal">5 años</div><span class="tag" style="color:var(--color-muted)">Sin restricciones</span></div>
+      <span class="member-arrow">›</span>
+    </div>
+
+    <hr class="section-sep" style="margin:24px 0 16px;">
+    <h4 class="category-header">Comidas del día</h4>
+    <div class="meals-chips">
+      <span class="chip chip--active">Desayuno</span>
+      <span class="chip chip--active">Comida</span>
+      <span class="chip chip--active">Cena</span>
+      <span class="chip">Snack</span>
+    </div>
+    <p style="font-size:13px; color:var(--color-muted); margin-top:8px;">Selecciona los momentos de comida que planificas</p>
+
+    <hr class="section-sep" style="margin:24px 0 16px;">
+    <h4 class="category-header">Restricciones del hogar</h4>
+    <div class="restriction-item">🚫 Sin lactosa (Carlos)</div>
+    <div class="restriction-item">🚫 Sin frutos secos (María)</div>
+
+    <button class="btn-primary" style="margin-top:24px;">Añadir miembro</button>
+  </div>
+
+  <!-- TAB BAR -->
+  <nav class="tab-bar">
+    <a class="tab-item tab-item--active" id="tab-plan" onclick="showPage('page-plan')">
+      <span class="tab-icon"><svg viewBox="0 0 16 14" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="0" y="0" width="16" height="14" rx="2"/><line x1="0" y1="4" x2="16" y2="4"/><line x1="5" y1="0" x2="5" y2="4"/><line x1="11" y1="0" x2="11" y2="4"/></svg></span>
+      <span class="tab-label">Plan</span>
+    </a>
+    <a class="tab-item" id="tab-recetas" onclick="showPage('page-recetas')">
+      <span class="tab-icon"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="0" y="0" width="14" height="14" rx="2"/><line x1="3" y1="4" x2="11" y2="4"/><line x1="3" y1="7" x2="11" y2="7"/><line x1="3" y1="10" x2="8" y2="10"/></svg></span>
+      <span class="tab-label">Recetas</span>
+    </a>
+    <a class="tab-item" id="tab-compra" onclick="showPage('page-compra')">
+      <span class="tab-icon"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="4" cy="14" r="1.5"/><circle cx="12" cy="14" r="1.5"/><path d="M0,0 L2,0 L4,10 L14,10 L16,3 L5,3"/></svg></span>
+      <span class="tab-label">Compra</span>
+    </a>
+    <a class="tab-item" id="tab-familia" onclick="showPage('page-familia')">
+      <span class="tab-icon"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="7" cy="4" r="3"/><path d="M0,14 C0,10 4,8 7,8 C10,8 14,10 14,14"/></svg></span>
+      <span class="tab-label">Familia</span>
+    </a>
+  </nav>
+
+  <script>
+    function showPage(pageId) {
+      document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+      document.getElementById(pageId).classList.add('active');
+      document.querySelectorAll('.tab-item').forEach(t => {
+        t.classList.remove('tab-item--active');
+        t.querySelector('.tab-icon svg').style.fill = 'none';
+        t.querySelector('.tab-icon svg').style.stroke = '#1a1a1a';
+      });
+      const tabMap = { 'page-plan': 'tab-plan', 'page-recetas': 'tab-recetas', 'page-compra': 'tab-compra', 'page-familia': 'tab-familia', 'page-detalle': 'tab-recetas' };
+      const tabId = tabMap[pageId];
+      if (tabId) {
+        const tab = document.getElementById(tabId);
+        tab.classList.add('tab-item--active');
+        tab.querySelector('.tab-icon svg').style.fill = '#2d7a4f';
+        tab.querySelector('.tab-icon svg').style.stroke = '#2d7a4f';
+      }
+      // Hide tab bar on detail page
+      const tabBar = document.querySelector('.tab-bar');
+      tabBar.style.display = pageId === 'page-detalle' ? 'none' : 'flex';
+      window.scrollTo(0, 0);
+    }
+    // Init active tab
+    document.getElementById('tab-plan').querySelector('.tab-icon svg').style.fill = '#2d7a4f';
+    document.getElementById('tab-plan').querySelector('.tab-icon svg').style.stroke = '#2d7a4f';
+  </script>
+</body>
+</html>

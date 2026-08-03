@@ -1,37 +1,37 @@
-# Wireframes — VibeVerano MenuHealthy
+# Wireframes — MenuFamiliaresHealthy
 
-Wireframes low-fi basados en `design.md`.
+Wireframes visuales de alta fidelidad basados en `../DESIGN.md`.
 
 ## Criterios aplicados
 
-- semana como objeto central
-- bottom navigation de 4 áreas: Plan, Recetas, Compra, Familia
-- una acción principal por pantalla
-- estados visibles: borrador, aprobado, ajustado, desactualizado
-- lista de compra como herramienta táctica real
-- catálogo de recetas como base de datos operativa
-- perfiles familiares claros, no clínicos
-- sustituciones rápidas en bottom sheet
+- Semana como objeto central
+- Bottom navigation de 4 áreas: Plan, Recetas, Compra, Familia
+- Una acción principal por pantalla
+- Estados visibles: borrador, aprobado, modificado
+- Lista de compra como herramienta táctica real
+- Catálogo de recetas con foto, filtros activos + botón embudo
+- Perfiles familiares claros, no clínicos
+- Sustitución rápida con icono ⇄
 
 ## Pantallas incluidas
 
-1. `01-onboarding-hogar.svg` — alta del hogar en pasos cortos
-2. `02-plan-semanal.svg` — vista núcleo de semana
-3. `03-plan-dia-detalle.svg` — detalle de día/comidas
-4. `04-recetas-catalogo.svg` — catálogo con búsqueda y filtros
-5. `05-receta-ficha.svg` — ficha por secciones
-6. `06-compra-lista.svg` — lista de compra agrupada
-7. `07-familia-miembros.svg` — miembros y criterios
-8. `08-ajuste-sustitucion-sheet.svg` — sustitución rápida con impacto
+| # | Ficheros | Descripción |
+|---|----------|-------------|
+| ⭐ | `01-planificador-semanal.svg` + `.md` | Vista core de semana con slots por día |
+| 2 | `02-catalogo-recetas.svg` + `.md` | Catálogo con búsqueda, filtros y fotos |
+| 3 | `03-detalle-receta.svg` + `.md` | Ficha completa con nutrición y compatibilidad |
+| 4 | `04-lista-compra.svg` + `.md` | Lista agrupada por categoría con checkboxes |
+| 5 | `05-familia-configuracion.svg` + `.md` | Miembros, restricciones y comidas del día |
 
 ## Uso
 
-- revisar en GitHub directamente como SVG
-- importar en Figma como base low-fi
-- usar como input para UI kit o mockups hi-fi posteriores
+- Abrir los `.svg` en el navegador para verlos a tamaño real de móvil (390px)
+- Los `.md` contienen la explicación detallada de cada pantalla
+- Para PDF: abrir SVG en navegador → Ctrl+P → "Guardar como PDF"
+- Los HTML integrados (SVG + explicación) están en `../disenyo-pantallas/`
 
-## Siguiente nivel recomendado
+## Relación con otros artefactos
 
-1. convertir estos wireframes en flujo navegable en Figma
-2. derivar design tokens y componentes base React Native
-3. diseñar estados vacíos, error, loading y dark mode
+- **DESIGN.md** (`../DESIGN.md`): Sistema de diseño con tokens y reglas
+- **Prototipo HTML** (`../prototipo-html/index.html`): Versión interactiva navegable
+- **Prototipo React** (`../prototipo-react/`): Versión React con navegación completa

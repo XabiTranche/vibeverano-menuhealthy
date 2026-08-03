@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lista de la Compra — MenuFamiliaresHealthy</title>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Nunito', sans-serif; background: #faf8f5; color: #1a1a1a; max-width: 900px; margin: 0 auto; padding: 40px 24px; }
+    h1 { font-size: 28px; font-weight: 700; margin-bottom: 8px; color: #2d7a4f; }
+    h2 { font-size: 22px; font-weight: 700; margin: 32px 0 12px; }
+    h3 { font-size: 18px; font-weight: 600; margin: 24px 0 8px; }
+    p, li { font-size: 15px; line-height: 1.6; color: #3d3d3d; }
+    ul { padding-left: 20px; margin-bottom: 16px; }
+    li { margin-bottom: 6px; }
+    .badge { display: inline-block; font-size: 11px; font-weight: 600; padding: 2px 10px; border-radius: 9999px; background: #e8f5ee; color: #2d7a4f; margin-right: 8px; }
+    .prototype-container { display: flex; justify-content: center; margin: 32px 0; padding: 24px; background: #ffffff; border-radius: 16px; box-shadow: 0 4px 20px rgba(0,0,0,0.06); }
+    .prototype-container svg { max-width: 390px; width: 100%; height: auto; border-radius: 12px; }
+    .section { margin-bottom: 32px; }
+    .divider { border: none; border-top: 1px solid #e8e4dc; margin: 32px 0; }
+    strong { color: #1a1a1a; }
+    .color-dot { display: inline-block; width: 12px; height: 12px; border-radius: 50%; margin-right: 6px; vertical-align: middle; }
+  </style>
+</head>
+<body>
+
+  <span class="badge">Pantalla 4</span>
+  <h1>Lista de la Compra</h1>
+  <p style="color:#7a7a72; margin-bottom:24px;">Checklist de ingredientes para el supermercado en MenuFamiliaresHealthy</p>
+
+  <hr class="divider">
+
+  <div class="section">
+    <h2>Objetivo</h2>
+    <p>Checklist de ingredientes generada automáticamente a partir del menú semanal aprobado. Está diseñada para usarse con una mano en el supermercado: máxima legibilidad, gestos simples, sin distracciones.</p>
+  </div>
+
+  <div class="section">
+    <h2>¿Qué puede hacer el usuario aquí?</h2>
+    <ul>
+      <li>Ver todos los ingredientes necesarios para la semana, agrupados por categoría</li>
+      <li>Tachar ingredientes a medida que los va comprando (tap en el checkbox)</li>
+      <li>Desmarcar un ingrediente si se tachó por error</li>
+      <li>Ver de un vistazo cuántos items quedan por comprar (contador "3/14")</li>
+      <li>Recibir aviso si la lista está desactualizada respecto al menú</li>
+    </ul>
+  </div>
+
+  <hr class="divider">
+
+  <h2>Prototipo visual</h2>
+  <div class="prototype-container">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 390 900" width="390" height="900">
+  <!-- Fondo canvas crema -->
+  <rect width="390" height="900" fill="#faf8f5"/>
+
+  <!-- Status bar -->
+  <rect width="390" height="44" fill="#faf8f5"/>
+  <text x="195" y="30" font-family="Nunito, sans-serif" font-size="12" font-weight="600" fill="#1a1a1a" text-anchor="middle">9:41</text>
+
+  <!-- Título pantalla -->
+  <text x="16" y="80" font-family="Nunito, sans-serif" font-size="28" font-weight="700" fill="#1a1a1a">Lista de la compra</text>
+  <text x="16" y="102" font-family="Nunito, sans-serif" font-size="13" font-weight="400" fill="#7a7a72">Semana del 4 al 10 ago</text>
+
+  <!-- Contador -->
+  <text x="374" y="102" font-family="Nunito, sans-serif" font-size="13" font-weight="600" fill="#2d7a4f" text-anchor="end">3/14</text>
+
+  <!-- Sección: VERDURAS -->
+  <text x="16" y="140" font-family="Nunito, sans-serif" font-size="12" font-weight="600" fill="#7a7a72" letter-spacing="0.2">VERDURAS</text>
+
+  <!-- Item 1 - pendiente -->
+  <rect x="16" y="152" width="358" height="52" rx="12" fill="#ffffff"/>
+  <circle cx="40" cy="178" r="10" fill="none" stroke="#e8e4dc" stroke-width="1.5"/>
+  <text x="60" y="183" font-family="Nunito, sans-serif" font-size="15" font-weight="400" fill="#1a1a1a">Tomates</text>
+  <text x="358" y="183" font-family="Nunito, sans-serif" font-size="13" font-weight="400" fill="#7a7a72" text-anchor="end">1 kg</text>
+
+  <!-- Item 2 - pendiente -->
+  <rect x="16" y="212" width="358" height="52" rx="12" fill="#ffffff"/>
+  <circle cx="40" cy="238" r="10" fill="none" stroke="#e8e4dc" stroke-width="1.5"/>
+  <text x="60" y="243" font-family="Nunito, sans-serif" font-size="15" font-weight="400" fill="#1a1a1a">Espinacas</text>
+  <text x="358" y="243" font-family="Nunito, sans-serif" font-size="13" font-weight="400" fill="#7a7a72" text-anchor="end">300g</text>
+
+  <!-- Item 3 - pendiente -->
+  <rect x="16" y="272" width="358" height="52" rx="12" fill="#ffffff"/>
+  <circle cx="40" cy="298" r="10" fill="none" stroke="#e8e4dc" stroke-width="1.5"/>
+  <text x="60" y="303" font-family="Nunito, sans-serif" font-size="15" font-weight="400" fill="#1a1a1a">Aguacate</text>
+  <text x="358" y="303" font-family="Nunito, sans-serif" font-size="13" font-weight="400" fill="#7a7a72" text-anchor="end">4 uds</text>
+
+  <!-- Item 4 - pendiente -->
+  <rect x="16" y="332" width="358" height="52" rx="12" fill="#ffffff"/>
+  <circle cx="40" cy="358" r="10" fill="none" stroke="#e8e4dc" stroke-width="1.5"/>
+  <text x="60" y="363" font-family="Nunito, sans-serif" font-size="15" font-weight="400" fill="#1a1a1a">Zanahoria</text>
+  <text x="358" y="363" font-family="Nunito, sans-serif" font-size="13" font-weight="400" fill="#7a7a72" text-anchor="end">500g</text>
+
+  <!-- Item 5 - pendiente -->
+  <rect x="16" y="392" width="358" height="52" rx="12" fill="#ffffff"/>
+  <circle cx="40" cy="418" r="10" fill="none" stroke="#e8e4dc" stroke-width="1.5"/>
+  <text x="60" y="423" font-family="Nunito, sans-serif" font-size="15" font-weight="400" fill="#1a1a1a">Limón</text>
+  <text x="358" y="423" font-family="Nunito, sans-serif" font-size="13" font-weight="400" fill="#7a7a72" text-anchor="end">4 uds</text>
+
+  <!-- Sección: PROTEÍNAS -->
+  <text x="16" y="472" font-family="Nunito, sans-serif" font-size="12" font-weight="600" fill="#7a7a72" letter-spacing="0.2">PROTEÍNAS</text>
+
+  <!-- Item 6 - TACHADO -->
+  <rect x="16" y="484" width="358" height="52" rx="12" fill="#f5f0e8"/>
+  <circle cx="40" cy="510" r="10" fill="#2d7a4f"/>
+  <text x="36" y="514" font-family="Nunito, sans-serif" font-size="12" font-weight="700" fill="#ffffff" text-anchor="middle">✓</text>
+  <text x="60" y="515" font-family="Nunito, sans-serif" font-size="15" font-weight="400" fill="#7a7a72" text-decoration="line-through">Pechuga de pollo</text>
+  <text x="358" y="515" font-family="Nunito, sans-serif" font-size="13" font-weight="400" fill="#a8a8a0" text-anchor="end">800g</text>
+
+  <!-- Item 7 - pendiente -->
+  <rect x="16" y="544" width="358" height="52" rx="12" fill="#ffffff"/>
+  <circle cx="40" cy="570" r="10" fill="none" stroke="#e8e4dc" stroke-width="1.5"/>
+  <text x="60" y="575" font-family="Nunito, sans-serif" font-size="15" font-weight="400" fill="#1a1a1a">Huevos</text>
+  <text x="358" y="575" font-family="Nunito, sans-serif" font-size="13" font-weight="400" fill="#7a7a72" text-anchor="end">12 uds</text>
+
+  <!-- Item 8 - TACHADO -->
+  <rect x="16" y="604" width="358" height="52" rx="12" fill="#f5f0e8"/>
+  <circle cx="40" cy="630" r="10" fill="#2d7a4f"/>
+  <text x="36" y="634" font-family="Nunito, sans-serif" font-size="12" font-weight="700" fill="#ffffff" text-anchor="middle">✓</text>
+  <text x="60" y="635" font-family="Nunito, sans-serif" font-size="15" font-weight="400" fill="#7a7a72" text-decoration="line-through">Garbanzos</text>
+  <text x="358" y="635" font-family="Nunito, sans-serif" font-size="13" font-weight="400" fill="#a8a8a0" text-anchor="end">400g</text>
+
+  <!-- Sección: LÁCTEOS -->
+  <text x="16" y="684" font-family="Nunito, sans-serif" font-size="12" font-weight="600" fill="#7a7a72" letter-spacing="0.2">LÁCTEOS</text>
+
+  <!-- Item 9 - pendiente -->
+  <rect x="16" y="696" width="358" height="52" rx="12" fill="#ffffff"/>
+  <circle cx="40" cy="722" r="10" fill="none" stroke="#e8e4dc" stroke-width="1.5"/>
+  <text x="60" y="727" font-family="Nunito, sans-serif" font-size="15" font-weight="400" fill="#1a1a1a">Yogur natural</text>
+  <text x="358" y="727" font-family="Nunito, sans-serif" font-size="13" font-weight="400" fill="#7a7a72" text-anchor="end">6 uds</text>
+
+  <!-- Item 10 - TACHADO -->
+  <rect x="16" y="756" width="358" height="52" rx="12" fill="#f5f0e8"/>
+  <circle cx="40" cy="782" r="10" fill="#2d7a4f"/>
+  <text x="36" y="786" font-family="Nunito, sans-serif" font-size="12" font-weight="700" fill="#ffffff" text-anchor="middle">✓</text>
+  <text x="60" y="787" font-family="Nunito, sans-serif" font-size="15" font-weight="400" fill="#7a7a72" text-decoration="line-through">Leche</text>
+  <text x="358" y="787" font-family="Nunito, sans-serif" font-size="13" font-weight="400" fill="#a8a8a0" text-anchor="end">2L</text>
+
+  <!-- Tab Bar -->
+  <rect x="0" y="840" width="390" height="60" fill="#ffffff"/>
+  <line x1="0" y1="840" x2="390" y2="840" stroke="#e8e4dc" stroke-width="1"/>
+  
+  <!-- Tab: Plan (inactivo) -->
+  <g transform="translate(36,852)">
+    <rect x="0" y="0" width="16" height="14" rx="2" fill="none" stroke="#1a1a1a" stroke-width="1.5"/>
+    <line x1="0" y1="4" x2="16" y2="4" stroke="#1a1a1a" stroke-width="1.5"/>
+    <line x1="5" y1="0" x2="5" y2="4" stroke="#1a1a1a" stroke-width="1.5"/>
+    <line x1="11" y1="0" x2="11" y2="4" stroke="#1a1a1a" stroke-width="1.5"/>
+  </g>
+  <text x="48" y="886" font-family="Nunito, sans-serif" font-size="11" font-weight="500" fill="#7a7a72" text-anchor="middle">Plan</text>
+  
+  <!-- Tab: Recetas (inactivo) -->
+  <g transform="translate(134,852)">
+    <rect x="0" y="0" width="14" height="14" rx="2" fill="none" stroke="#1a1a1a" stroke-width="1.5"/>
+    <line x1="3" y1="4" x2="11" y2="4" stroke="#1a1a1a" stroke-width="1.5"/>
+    <line x1="3" y1="7" x2="11" y2="7" stroke="#1a1a1a" stroke-width="1.5"/>
+    <line x1="3" y1="10" x2="8" y2="10" stroke="#1a1a1a" stroke-width="1.5"/>
+  </g>
+  <text x="146" y="886" font-family="Nunito, sans-serif" font-size="11" font-weight="500" fill="#7a7a72" text-anchor="middle">Recetas</text>
+  
+  <!-- Tab: Compra (activo - verde relleno) -->
+  <g transform="translate(232,852)">
+    <circle cx="4" cy="14" r="1.5" fill="#2d7a4f" stroke="#2d7a4f" stroke-width="1.5"/>
+    <circle cx="12" cy="14" r="1.5" fill="#2d7a4f" stroke="#2d7a4f" stroke-width="1.5"/>
+    <path d="M0,0 L2,0 L4,10 L14,10 L16,3 L5,3" fill="#2d7a4f" stroke="#2d7a4f" stroke-width="1.5"/>
+  </g>
+  <text x="244" y="886" font-family="Nunito, sans-serif" font-size="11" font-weight="500" fill="#2d7a4f" text-anchor="middle">Compra</text>
+  
+  <!-- Tab: Familia (inactivo) -->
+  <g transform="translate(330,852)">
+    <circle cx="7" cy="4" r="3" fill="none" stroke="#1a1a1a" stroke-width="1.5"/>
+    <path d="M0,14 C0,10 4,8 7,8 C10,8 14,10 14,14" fill="none" stroke="#1a1a1a" stroke-width="1.5"/>
+  </g>
+  <text x="342" y="886" font-family="Nunito, sans-serif" font-size="11" font-weight="500" fill="#7a7a72" text-anchor="middle">Familia</text>
+</svg>
+  </div>
+
+  <hr class="divider">
+
+  <div class="section">
+    <h2>Explicación de cada parte</h2>
+
+    <h3>Título + referencia temporal</h3>
+    <p>"Lista de la compra" como título principal, con la semana de referencia debajo ("Semana del 4 al 10 ago") y un contador de progreso ("3/14") en verde a la derecha.</p>
+
+    <h3>Headers de categoría</h3>
+    <p>Etiquetas en uppercase y color muted que agrupan los ingredientes: VERDURAS, PROTEÍNAS, LÁCTEOS, etc. Sin fondo — solo texto para separar visualmente las secciones.</p>
+
+    <h3>Items pendientes</h3>
+    <p>Tarjetas blancas de 52px de alto con:</p>
+    <ul>
+      <li><strong>Checkbox circular vacío</strong> a la izquierda (borde gris suave)</li>
+      <li><strong>Nombre del ingrediente</strong> en texto principal (15px)</li>
+      <li><strong>Cantidad</strong> a la derecha en texto muted (1 kg, 4 uds, 300g...)</li>
+    </ul>
+    <p>Al tocar cualquier parte del item, se tacha.</p>
+
+    <h3>Items comprados (tachados)</h3>
+    <p>Misma estructura pero con:</p>
+    <ul>
+      <li><strong>Checkbox verde con ✓</strong> blanco</li>
+      <li><strong>Fondo crema cálido</strong> (surface-warm) en vez de blanco</li>
+      <li><strong>Texto tachado en muted</strong> — baja la prioridad visual para que los pendientes destaquen</li>
+    </ul>
+
+    <h3>Tab bar (menú inferior)</h3>
+    <p>Navegación fija con "Compra" activa en verde.</p>
+  </div>
+
+  <hr class="divider">
+
+  <div class="section">
+    <h2>Decisiones de diseño</h2>
+    <ul>
+      <li><strong>Tipografía grande (15px)</strong> — legible a distancia de brazo, bajo luces de supermercado</li>
+      <li><strong>Zonas de tap de 52px</strong> — se puede tachar sin mirar directamente la pantalla</li>
+      <li><strong>Sin acciones complejas</strong> — solo tap para tachar/destachar. No hay edición, no hay arrastre, no hay menús contextuales. La compra debe ser rápida.</li>
+      <li><strong>Items tachados bajan visualmente</strong> — el cambio de fondo (blanco → crema) + texto muted hace que lo pendiente siempre destaque sobre lo ya comprado</li>
+      <li><strong>Agrupación por categoría de compra</strong> — no por receta ni por día, sino por sección del supermercado (verduras, proteínas, lácteos) para optimizar el recorrido</li>
+    </ul>
+  </div>
+
+</body>
+</html>

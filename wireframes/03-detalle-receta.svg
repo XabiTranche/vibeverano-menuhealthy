@@ -1,0 +1,110 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 390 1100" width="390" height="1100">
+  <!-- Fondo canvas crema -->
+  <rect width="390" height="1100" fill="#faf8f5"/>
+
+  <!-- Status bar -->
+  <rect width="390" height="44" fill="#faf8f5"/>
+  <text x="195" y="30" font-family="Nunito, sans-serif" font-size="12" font-weight="600" fill="#1a1a1a" text-anchor="middle">9:41</text>
+
+  <!-- Botón volver -->
+  <text x="16" y="72" font-family="Nunito, sans-serif" font-size="15" font-weight="700" fill="#2d7a4f">← Volver</text>
+
+  <!-- Título receta -->
+  <text x="16" y="108" font-family="Nunito, sans-serif" font-size="28" font-weight="700" fill="#1a1a1a">Pollo al limón</text>
+  <text x="16" y="138" font-family="Nunito, sans-serif" font-size="28" font-weight="700" fill="#1a1a1a">con arroz</text>
+
+  <!-- Badges tipo + compatibilidad + TIEMPO -->
+  <rect x="16" y="154" width="64" height="26" rx="12" fill="#f5f0e8"/>
+  <text x="48" y="171" font-family="Nunito, sans-serif" font-size="12" font-weight="600" fill="#3d3d3d" text-anchor="middle">Comida</text>
+
+  <rect x="88" y="154" width="76" height="26" rx="12" fill="#f5f0e8"/>
+  <text x="126" y="171" font-family="Nunito, sans-serif" font-size="12" font-weight="600" fill="#3d3d3d" text-anchor="middle">Sin gluten</text>
+
+  <rect x="172" y="154" width="110" height="26" rx="12" fill="#f5f0e8"/>
+  <text x="227" y="171" font-family="Nunito, sans-serif" font-size="12" font-weight="600" fill="#3d3d3d" text-anchor="middle">Alta en proteína</text>
+
+  <rect x="290" y="154" width="72" height="26" rx="12" fill="#f5f0e8"/>
+  <text x="326" y="171" font-family="Nunito, sans-serif" font-size="12" font-weight="600" fill="#7a7a72" text-anchor="middle">⏱ 30 min</text>
+
+  <!-- Imagen del plato (debajo de los badges) -->
+  <rect x="16" y="196" width="358" height="180" rx="16" fill="#f0e0c8"/>
+  <text x="195" y="298" font-family="sans-serif" font-size="56" text-anchor="middle">🍗</text>
+
+  <!-- Separador -->
+  <line x1="16" y1="392" x2="374" y2="392" stroke="#e8e4dc" stroke-width="1"/>
+
+  <!-- Sección: Valores nutricionales (recuadros grandes, fondo blanco) -->
+  <text x="16" y="420" font-family="Nunito, sans-serif" font-size="16" font-weight="600" fill="#1a1a1a">Valores nutricionales</text>
+
+  <!-- Recuadro kcal -->
+  <rect x="16" y="434" width="82" height="52" rx="12" fill="#ffffff" stroke="#e8e4dc" stroke-width="1"/>
+  <text x="57" y="456" font-family="Nunito, sans-serif" font-size="18" font-weight="700" fill="#1a1a1a" text-anchor="middle">485</text>
+  <text x="57" y="474" font-family="Nunito, sans-serif" font-size="11" font-weight="500" fill="#7a7a72" text-anchor="middle">kcal</text>
+
+  <!-- Recuadro carbohidratos -->
+  <rect x="106" y="434" width="82" height="52" rx="12" fill="#ffffff" stroke="#e8e4dc" stroke-width="1"/>
+  <text x="147" y="456" font-family="Nunito, sans-serif" font-size="18" font-weight="700" fill="#1a1a1a" text-anchor="middle">42g</text>
+  <text x="147" y="474" font-family="Nunito, sans-serif" font-size="11" font-weight="500" fill="#7a7a72" text-anchor="middle">carbos</text>
+
+  <!-- Recuadro grasas -->
+  <rect x="196" y="434" width="82" height="52" rx="12" fill="#ffffff" stroke="#e8e4dc" stroke-width="1"/>
+  <text x="237" y="456" font-family="Nunito, sans-serif" font-size="18" font-weight="700" fill="#1a1a1a" text-anchor="middle">15g</text>
+  <text x="237" y="474" font-family="Nunito, sans-serif" font-size="11" font-weight="500" fill="#7a7a72" text-anchor="middle">grasas</text>
+
+  <!-- Recuadro proteínas -->
+  <rect x="286" y="434" width="82" height="52" rx="12" fill="#ffffff" stroke="#e8e4dc" stroke-width="1"/>
+  <text x="327" y="456" font-family="Nunito, sans-serif" font-size="18" font-weight="700" fill="#1a1a1a" text-anchor="middle">35g</text>
+  <text x="327" y="474" font-family="Nunito, sans-serif" font-size="11" font-weight="500" fill="#7a7a72" text-anchor="middle">proteína</text>
+
+  <!-- Separador -->
+  <line x1="16" y1="504" x2="374" y2="504" stroke="#e8e4dc" stroke-width="1"/>
+
+  <!-- Sección: Ingredientes -->
+  <text x="16" y="532" font-family="Nunito, sans-serif" font-size="16" font-weight="600" fill="#1a1a1a">Ingredientes</text>
+
+  <text x="16" y="558" font-family="Nunito, sans-serif" font-size="15" font-weight="400" fill="#3d3d3d">•  Pechuga de pollo — 400g</text>
+  <text x="16" y="584" font-family="Nunito, sans-serif" font-size="15" font-weight="400" fill="#3d3d3d">•  Arroz basmati — 200g</text>
+  <text x="16" y="610" font-family="Nunito, sans-serif" font-size="15" font-weight="400" fill="#3d3d3d">•  Limón — 2 unidades</text>
+  <text x="16" y="636" font-family="Nunito, sans-serif" font-size="15" font-weight="400" fill="#3d3d3d">•  Aceite de oliva — 2 cucharadas</text>
+  <text x="16" y="662" font-family="Nunito, sans-serif" font-size="15" font-weight="400" fill="#3d3d3d">•  Ajo — 3 dientes</text>
+  <text x="16" y="688" font-family="Nunito, sans-serif" font-size="15" font-weight="400" fill="#3d3d3d">•  Caldo de pollo — 150ml</text>
+  <text x="16" y="714" font-family="Nunito, sans-serif" font-size="15" font-weight="400" fill="#3d3d3d">•  Sal y pimienta</text>
+
+  <!-- Separador -->
+  <line x1="16" y1="734" x2="374" y2="734" stroke="#e8e4dc" stroke-width="1"/>
+
+  <!-- Sección: Compatibilidad familiar -->
+  <text x="16" y="762" font-family="Nunito, sans-serif" font-size="16" font-weight="600" fill="#1a1a1a">Compatibilidad familiar</text>
+
+  <rect x="16" y="774" width="358" height="36" rx="8" fill="#ffffff" stroke="#e8e4dc" stroke-width="0.5"/>
+  <text x="32" y="797" font-family="Nunito, sans-serif" font-size="13" font-weight="600" fill="#2d7a4f">✓</text>
+  <text x="48" y="797" font-family="Nunito, sans-serif" font-size="13" font-weight="400" fill="#1a1a1a">Apto para toda la familia</text>
+
+  <rect x="16" y="818" width="358" height="36" rx="8" fill="#ffffff" stroke="#e8e4dc" stroke-width="0.5"/>
+  <text x="32" y="841" font-family="Nunito, sans-serif" font-size="13" font-weight="600" fill="#2d7a4f">✓</text>
+  <text x="48" y="841" font-family="Nunito, sans-serif" font-size="13" font-weight="400" fill="#1a1a1a">Sin alérgenos registrados</text>
+
+  <rect x="16" y="862" width="358" height="36" rx="8" fill="#ffffff" stroke="#e8e4dc" stroke-width="0.5"/>
+  <text x="32" y="885" font-family="Nunito, sans-serif" font-size="13" font-weight="600" fill="#2d7a4f">✓</text>
+  <text x="48" y="885" font-family="Nunito, sans-serif" font-size="13" font-weight="400" fill="#1a1a1a">Compatible con objetivo de Carlos (perder peso)</text>
+
+  <!-- Separador -->
+  <line x1="16" y1="916" x2="374" y2="916" stroke="#e8e4dc" stroke-width="1"/>
+
+  <!-- Banner "En uso" -->
+  <rect x="16" y="928" width="358" height="36" rx="8" fill="#e8f5ee"/>
+  <text x="32" y="951" font-family="Nunito, sans-serif" font-size="13" font-weight="600" fill="#2d7a4f">📅 En uso: Lunes 4 (comida), Jueves 7 (comida)</text>
+
+  <!-- Botones de acción -->
+  <!-- Añadir al plan (primary) -->
+  <rect x="16" y="980" width="358" height="48" rx="12" fill="#2d7a4f"/>
+  <text x="195" y="1009" font-family="Nunito, sans-serif" font-size="15" font-weight="700" fill="#ffffff" text-anchor="middle">Añadir al plan</text>
+
+  <!-- Editar receta (secondary) -->
+  <rect x="16" y="1040" width="170" height="44" rx="12" fill="#ffffff" stroke="#2d7a4f" stroke-width="1.5"/>
+  <text x="101" y="1067" font-family="Nunito, sans-serif" font-size="14" font-weight="700" fill="#2d7a4f" text-anchor="middle">Editar</text>
+
+  <!-- Eliminar receta (danger - rojo, deshabilitado visualmente porque está en uso) -->
+  <rect x="198" y="1040" width="176" height="44" rx="12" fill="#ffffff" stroke="#c53030" stroke-width="1.5" opacity="0.4"/>
+  <text x="286" y="1067" font-family="Nunito, sans-serif" font-size="14" font-weight="700" fill="#c53030" text-anchor="middle" opacity="0.4">Eliminar</text>
+</svg>
