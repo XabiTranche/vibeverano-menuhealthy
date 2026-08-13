@@ -1,76 +1,133 @@
-# MenuFamiliaresHealthy — Diseño
+# MenuFamiliaresHealthy
 
-## Descripción del proyecto
-
-**MenuFamiliaresHealthy** es una aplicación móvil para planificar menús semanales familiares saludables. La app tiene en cuenta restricciones alimentarias (alergias, intolerancias), preferencias, objetivos nutricionales (perder peso, ganar masa muscular, mantenimiento) y genera automáticamente la lista de la compra a partir del menú aprobado.
+Aplicación móvil para planificar menús semanales familiares teniendo en cuenta restricciones alimentarias, preferencias, objetivos nutricionales y generación automática de lista de la compra.
 
 ## Estructura del proyecto
 
 ```
 vibeverano-menuhealthy/
-├── DESIGN.md                          ← Sistema de diseño (tokens + prosa)
-├── README.md                          ← Este fichero
-├── wireframes/                        ← SVG + explicación de cada pantalla
-│   ├── README.md
-│   ├── 01-planificador-semanal.svg + .md
-│   ├── 02-catalogo-recetas.svg + .md
-│   ├── 03-detalle-receta.svg + .md
-│   ├── 04-lista-compra.svg + .md
-│   └── 05-familia-configuracion.svg + .md
-├── disenyo-pantallas/                 ← HTML + PDF entregables por pantalla
-│   ├── 01-planificador-semanal.html + .pdf
-│   ├── 02-catalogo-recetas.html + .pdf
-│   ├── 03-detalle-receta.html + .pdf
-│   ├── 04-lista-compra.html + .pdf
-│   └── 05-familia-configuracion.html
-├── prototipo-html/                    ← Prototipo interactivo HTML puro
-│   └── index.html
-├── prototipo-react/                   ← Prototipo interactivo React + Vite
-│   ├── README.md
-│   ├── package.json
-│   └── src/
-└── specs/                             ← Especificaciones funcionales
-    ├── VibeVerano-menuhealthy.md
-    ├── spec 001 - perfiles y criterios familiares.md
-    ├── spec 002 - planificación semanal de menús.md
-    ├── spec 003 - lista de la compra.md
-    ├── spec 004 - ajustes sustituciones y seguimiento.md
-    └── spec 005 - catálogo de recetas.md
+├── app/                          ← Código fuente del MVP (React Native + Expo)
+├── specs/                        ← Especificaciones formales (spec-kit)
+│   ├── 001-perfiles-y-criterios-familiares/
+│   ├── 002-planificacion-semanal-de-menus/
+│   ├── 003-lista-de-la-compra/
+│   ├── 004-ajustes-sustituciones-y-seguimiento/
+│   └── 005-catalogo-recetas-alimentos-valores-nutricionales/
+├── wireframes/                   ← Diseño de pantallas (md + svg)
+├── prototipo-react/              ← Prototipo visual HTML (referencia, no producción)
+├── checklists/                   ← Validaciones de specs contra constitution
+└── .specify/                     ← Configuración spec-kit
 ```
 
-## Pantallas
+## Stack tecnológico
 
-| # | Pantalla | Descripción |
-|---|----------|-------------|
-| ⭐ | **Planificador Semanal** | Vista principal: ver y gestionar la semana de comidas |
-| 2 | **Catálogo de Recetas** | Explorar, buscar y filtrar platos disponibles |
-| 3 | **Detalle de Receta** | Info completa de un plato y asignarlo al plan |
-| 4 | **Lista de la Compra** | Checklist de ingredientes para el supermercado |
-| 5 | **Familia y Configuración** | Miembros, restricciones y objetivos del hogar |
+- **Frontend**: React Native (Expo) + TypeScript strict
+- **Backend**: Supabase (PostgreSQL + Auth + Realtime)
+- **Testing**: Jest + React Native Testing Library
+- **i18n**: react-i18next (español por defecto)
+- **Navegación**: Expo Router (file-based routing)
 
-## Navegación
+## Cómo levantar el MVP
 
-Tab bar inferior con 4 destinos:
-- 📅 **Plan** — Planificador Semanal (pantalla core)
-- 📖 **Recetas** — Catálogo
-- 🛒 **Compra** — Lista de la compra
-- 👥 **Familia** — Configuración del hogar
+### Prerrequisitos
 
-## Cómo ver los prototipos
+- Node.js 18+
+- Cuenta en [Supabase](https://supabase.com) con proyecto creado
 
-- **SVG** (en `wireframes/`): Abrir en el navegador. Para PDF: Ctrl+P → "Guardar como PDF".
-- **HTML entregable** (en `disenyo-pantallas/`): Abrir en navegador. SVG + explicación integrados.
-- **Prototipo HTML interactivo** (en `prototipo-html/`): Abrir `index.html`. Navegación funcional entre las 5 pantallas.
-- **Prototipo React** (en `prototipo-react/`): `npm install && npm run dev`. Navegación completa con React Router.
+### 1. Instalar dependencias
 
-## Principios de diseño
+```bash
+cd app
+npm install
+```
 
-1. **Mobile-first, una mano** — Uso vertical con el pulgar. Acciones siempre en la mitad inferior.
-2. **Cálida y natural** — Fondo crema, tarjetas blancas, un solo verde como acento.
-3. **Funcional, no decorativa** — La información guía la decisión.
-4. **Touch targets generosos** — Mínimo 48-52px en toda zona interactiva.
-5. **Estado siempre visible** — Badge de estado en el planificador (borrador/aprobada/modificada).
+### 2. Configurar Supabase
 
-## Sistema de diseño
+Copia el fichero de entorno:
 
-El sistema visual completo está en `DESIGN.md`, siguiendo el estándar [design.md de Google](https://github.com/nichochar/design.md).
+```bash
+cp .env.example .env
+```
+
+Edita `.env` con tu URL y Anon Key de Supabase (Settings → API en el dashboard).
+
+### 3. Crear tablas en Supabase
+
+Ejecuta los siguientes ficheros SQL en el **SQL Editor** del dashboard de Supabase, en este orden:
+
+1. `app/supabase/migrations/001_initial_schema.sql`
+2. `app/supabase/migrations/002_profiles_criteria.sql`
+3. `app/supabase/migrations/004_planning_tables.sql`
+4. `app/supabase/migrations/005_shopping_list.sql`
+5. `app/supabase/seeds/003_seed_ingredients_recipes.sql`
+
+Después ejecuta los permisos:
+
+```sql
+-- Permisos para desarrollo
+ALTER TABLE families DISABLE ROW LEVEL SECURITY;
+ALTER TABLE family_members DISABLE ROW LEVEL SECURITY;
+ALTER TABLE dietary_restrictions DISABLE ROW LEVEL SECURITY;
+ALTER TABLE food_preferences DISABLE ROW LEVEL SECURITY;
+ALTER TABLE nutritional_goals DISABLE ROW LEVEL SECURITY;
+ALTER TABLE family_recipes DISABLE ROW LEVEL SECURITY;
+ALTER TABLE recipe_ingredients DISABLE ROW LEVEL SECURITY;
+ALTER TABLE compatibility_tags DISABLE ROW LEVEL SECURITY;
+ALTER TABLE goal_tags DISABLE ROW LEVEL SECURITY;
+ALTER TABLE planned_weeks DISABLE ROW LEVEL SECURITY;
+ALTER TABLE menu_proposals DISABLE ROW LEVEL SECURITY;
+ALTER TABLE planned_meals DISABLE ROW LEVEL SECURITY;
+ALTER TABLE shopping_lists DISABLE ROW LEVEL SECURITY;
+ALTER TABLE shopping_items DISABLE ROW LEVEL SECURITY;
+ALTER TABLE master_ingredients DISABLE ROW LEVEL SECURITY;
+ALTER TABLE base_catalog_recipes DISABLE ROW LEVEL SECURITY;
+
+GRANT ALL ON ALL TABLES IN SCHEMA public TO anon;
+GRANT ALL ON ALL TABLES IN SCHEMA public TO authenticated;
+```
+
+### 4. Iniciar la app
+
+```bash
+npx expo start
+```
+
+- **Web**: abre http://localhost:8081
+- **Móvil**: instala Expo Go y escanea el QR (requiere misma red WiFi)
+
+### 5. Usar la app
+
+1. **Regístrate** con email y contraseña
+2. Ve a **Familia** → añade miembros con restricciones (ej: "lactosa" como Intolerancia)
+3. Ve a **Plan** → pulsa "Generar menú" → el sistema excluye recetas incompatibles
+4. **Aprueba** la semana
+5. Ve a **Compra** → "Generar lista" → checklist interactivo para el supermercado
+6. Usa **⇄** en cualquier plato para sustituirlo por otro compatible
+
+## Funcionalidades del MVP
+
+| Feature | Descripción |
+|---------|-------------|
+| Auth | Login/registro con Supabase Auth |
+| Planificador semanal | Genera menú 7 días × 4 comidas respetando restricciones |
+| Aprobación | Marca menú como vigente para generar compra |
+| Sustitución | Cambiar platos con validación de restricciones |
+| Lista de la compra | Generada automáticamente, checklist interactivo |
+| Familia | Miembros, restricciones, objetivos, config comidas |
+| Catálogo | 50 ingredientes + 10 recetas base con búsqueda/filtros |
+
+## Documentación de specs
+
+Cada spec tiene la estructura completa spec-kit:
+
+```
+specs/NNN-feature/
+├── spec.md          ← Requisitos y escenarios
+├── plan.md          ← Plan de implementación
+├── research.md      ← Decisiones técnicas
+├── data-model.md    ← Modelo de datos
+├── quickstart.md    ← Escenarios de validación
+├── contracts/       ← Interfaces de servicios
+├── tasks.md         ← Tasks de implementación
+└── checklists/      ← Quality checks
+```
