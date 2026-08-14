@@ -32,10 +32,10 @@
 
 **⚠️ CRITICAL**: No user story work can begin until this phase is complete
 
-- [ ] T002 Create WatermelonDB schema for spec 001 tables (Family, FamilyMember, DietaryRestriction, FoodPreference, NutritionalGoal) in `src/database/schema.ts` — extend existing schema from spec 005
-- [ ] T003 [P] Create initial migration for spec 001 tables in `src/database/migrations/`
-- [ ] T004 [P] Configure Supabase tables + RLS policies for spec 001 entities (Family, FamilyMember, DietaryRestriction, FoodPreference, NutritionalGoal)
-- [ ] T005 [P] Setup i18n namespace `001-profiles` with `src/i18n/001-profiles/es.json` (labels for family, members, restrictions, preferences, goals, readiness, meal types)
+- [X] T002 Create WatermelonDB schema for spec 001 tables (Family, FamilyMember, DietaryRestriction, FoodPreference, NutritionalGoal) in `src/database/schema.ts` — extend existing schema from spec 005
+- [X] T003 [P] Create initial migration for spec 001 tables in `src/database/migrations/`
+- [X] T004 [P] Configure Supabase tables + RLS policies for spec 001 entities (Family, FamilyMember, DietaryRestriction, FoodPreference, NutritionalGoal)
+- [X] T005 [P] Setup i18n namespace `001-profiles` with `src/i18n/001-profiles/es.json` (labels for family, members, restrictions, preferences, goals, readiness, meal types)
 
 **Checkpoint**: Foundation ready — database schema defined, migrations runnable, backend tables created, i18n keys available. User story implementation can now begin.
 
@@ -49,13 +49,13 @@
 
 ### Implementation for User Story 1
 
-- [ ] T006 [P] [US1] Create Family model in `src/models/Family.ts` (fields: id, name, ownerId, activeMealTypes, createdAt, updatedAt — per data-model.md)
-- [ ] T007 [P] [US1] Create FamilyMember model in `src/models/FamilyMember.ts` (fields: id, familyId, name, age, sex, archivedAt, restrictionsReviewed, createdAt, updatedAt — with soft delete via archivedAt)
-- [ ] T008 [US1] Implement FamilyService in `src/services/FamilyService.ts` (createFamily, getFamily, updateFamily, addMember, updateMember, archiveMember, reactivateMember, getActiveMembers, getAllMembers, updateMealTypes — per contracts/family-service.md)
+- [X] T006 [P] [US1] Create Family model in `src/models/Family.ts` (fields: id, name, ownerId, activeMealTypes, createdAt, updatedAt — per data-model.md)
+- [X] T007 [P] [US1] Create FamilyMember model in `src/models/FamilyMember.ts` (fields: id, familyId, name, age, sex, archivedAt, restrictionsReviewed, createdAt, updatedAt — with soft delete via archivedAt)
+- [X] T008 [US1] Implement FamilyService in `src/services/FamilyService.ts` (createFamily, getFamily, updateFamily, addMember, updateMember, archiveMember, reactivateMember, getActiveMembers, getAllMembers, updateMealTypes — per contracts/family-service.md)
 - [ ] T009 [US1] Implement FamilySetup screen in `src/screens/FamilySetup/` (create household flow — onboarding: input family name, add first member)
-- [ ] T010 [US1] Implement FamiliaConfiguracion screen in `src/screens/FamiliaConfiguracion/` (main screen per wireframe 05: member list with cards, banner readiness, meal type chips, consolidated restrictions, "Añadir miembro" button, tab bar with Familia active)
-- [ ] T011 [US1] Implement MemberCard component in `src/components/MemberCard.tsx` (avatar circle with initial — green for owner/crema for others, name, age, goal badge, restriction badges with 🚫, arrow › for navigation to detail)
-- [ ] T012 [US1] Implement MemberDetail screen in `src/screens/MemberDetail/` (edit member: name, age, sex fields + navigation links to restrictions/preferences/goals screens)
+- [X] T010 [US1] Implement FamiliaConfiguracion screen in `src/screens/FamiliaConfiguracion/` (main screen per wireframe 05: member list with cards, banner readiness, meal type chips, consolidated restrictions, "Añadir miembro" button, tab bar with Familia active)
+- [X] T011 [US1] Implement MemberCard component in `src/components/MemberCard.tsx` (avatar circle with initial — green for owner/crema for others, name, age, goal badge, restriction badges with 🚫, arrow › for navigation to detail)
+- [X] T012 [US1] Implement MemberDetail screen in `src/screens/MemberDetail/` (edit member: name, age, sex fields + navigation links to restrictions/preferences/goals screens)
 
 **Checkpoint**: Family unit can be created, members added/edited/archived, main FamiliaConfiguracion screen renders member cards with wireframe 05 layout.
 
@@ -69,10 +69,10 @@
 
 ### Implementation for User Story 2
 
-- [ ] T013 [P] [US2] Create DietaryRestriction model in `src/models/DietaryRestriction.ts` (fields: id, memberId, category, name, severity, notes, createdAt — severity auto-inferred from category per data-model.md)
-- [ ] T014 [P] [US2] Create FoodPreference model in `src/models/FoodPreference.ts` (fields: id, memberId, foodItem, type, intensity, createdAt)
-- [ ] T015 [US2] Implement CriteriaService in `src/services/CriteriaService.ts` (addRestriction, updateRestriction, removeRestriction, getMemberRestrictions, getMandatoryRestrictions, addPreference, updatePreference, removePreference, getMemberPreferences, checkCoherence — per contracts/criteria-service.md)
-- [ ] T016 [US2] Implement Restrictions screen in `src/screens/Restrictions/` (list restrictions by member, add new with category picker: allergy/intolerance/ethical_religious/preference, severity auto-assigned based on category, notes optional)
+- [X] T013 [P] [US2] Create DietaryRestriction model in `src/models/DietaryRestriction.ts` (fields: id, memberId, category, name, severity, notes, createdAt — severity auto-inferred from category per data-model.md)
+- [X] T014 [P] [US2] Create FoodPreference model in `src/models/FoodPreference.ts` (fields: id, memberId, foodItem, type, intensity, createdAt)
+- [X] T015 [US2] Implement CriteriaService in `src/services/CriteriaService.ts` (addRestriction, updateRestriction, removeRestriction, getMemberRestrictions, getMandatoryRestrictions, addPreference, updatePreference, removePreference, getMemberPreferences, checkCoherence — per contracts/criteria-service.md)
+- [X] T016 [US2] Implement Restrictions screen in `src/screens/Restrictions/` (list restrictions by member, add new with category picker: allergy/intolerance/ethical_religious/preference, severity auto-assigned based on category, notes optional)
 - [ ] T017 [US2] Implement Preferences screen in `src/screens/Preferences/` (list liked/disliked items per member, add with foodItem + type toggle + intensity picker)
 - [ ] T018 [US2] Implement coherence warning UI (when preference type=liked conflicts with restriction name → show warning banner: "La restricción tiene prioridad", restriction prevails — non-blocking)
 
@@ -88,10 +88,10 @@
 
 ### Implementation for User Story 3
 
-- [ ] T019 [P] [US3] Create NutritionalGoal model in `src/models/NutritionalGoal.ts` (fields: id, memberId, goalType, priority, isActive, createdAt, updatedAt)
-- [ ] T020 [US3] Implement CriteriaService goal methods — extend existing service in `src/services/CriteriaService.ts` (addGoal, updateGoal, removeGoal, getActiveGoals + goal conflict detection in checkCoherence)
-- [ ] T021 [US3] Implement Goals screen in `src/screens/Goals/` (select goalType per member: lose_weight/maintain/gain_muscle, show conflict warning if contradictory goals coexist)
-- [ ] T022 [US3] Implement GoalSelector component in `src/components/GoalSelector.tsx` (toggle/picker for goal type, visual feedback for active selection, warning indicator for conflicts)
+- [X] T019 [P] [US3] Create NutritionalGoal model in `src/models/NutritionalGoal.ts` (fields: id, memberId, goalType, priority, isActive, createdAt, updatedAt)
+- [X] T020 [US3] Implement CriteriaService goal methods — extend existing service in `src/services/CriteriaService.ts` (addGoal, updateGoal, removeGoal, getActiveGoals + goal conflict detection in checkCoherence)
+- [X] T021 [US3] Implement Goals screen in `src/screens/Goals/` (select goalType per member: lose_weight/maintain/gain_muscle, show conflict warning if contradictory goals coexist)
+- [X] T022 [US3] Implement GoalSelector component in `src/components/GoalSelector.tsx` (toggle/picker for goal type, visual feedback for active selection, warning indicator for conflicts)
 
 **Checkpoint**: Goals assigned per member, conflicts detected informatively, goal badge visible in MemberCard.
 
@@ -105,10 +105,10 @@
 
 ### Implementation for User Story 4
 
-- [ ] T023 [US4] Implement ReadinessService in `src/services/ReadinessService.ts` (checkReadiness: computed on-demand, returns ReadinessResult with ready/missing per member — per contracts/readiness-service.md. Ready = name + age + sex + restrictionsReviewed for all active members)
-- [ ] T024 [US4] Implement useReadinessCheck hook in `src/hooks/useReadinessCheck.ts` (reactive via WatermelonDB observables, auto-recalculates on data changes, exposes result/loading/refresh)
-- [ ] T025 [US4] Implement ReadinessIndicator component in `src/components/ReadinessIndicator.tsx` (banner: "✓ Lista para planificar" green background / "⚠ Faltan datos de [nombre]" yellow background — per wireframe 05)
-- [ ] T026 [US4] Integrate ReadinessIndicator into FamiliaConfiguracion screen (top position banner, uses useReadinessCheck hook)
+- [X] T023 [US4] Implement ReadinessService in `src/services/ReadinessService.ts` (checkReadiness: computed on-demand, returns ReadinessResult with ready/missing per member — per contracts/readiness-service.md. Ready = name + age + sex + restrictionsReviewed for all active members)
+- [X] T024 [US4] Implement useReadinessCheck hook in `src/hooks/useReadinessCheck.ts` (reactive via WatermelonDB observables, auto-recalculates on data changes, exposes result/loading/refresh)
+- [X] T025 [US4] Implement ReadinessIndicator component in `src/components/ReadinessIndicator.tsx` (banner: "✓ Lista para planificar" green background / "⚠ Faltan datos de [nombre]" yellow background — per wireframe 05)
+- [X] T026 [US4] Integrate ReadinessIndicator into FamiliaConfiguracion screen (top position banner, uses useReadinessCheck hook)
 
 **Checkpoint**: Readiness banner shows correct state. Completing all member data transitions banner from yellow to green.
 
@@ -118,8 +118,8 @@
 
 **Purpose**: User can toggle which meal types are planned for the household (per wireframe 05 chips section: "Comidas del día")
 
-- [ ] T027 [US1] Implement MealTypeChips component in `src/components/MealTypeChips.tsx` (toggle chips: active state = green/rounded, inactive state = crema/rounded. Labels: Desayuno, Comida, Cena, Snack. At least 1 must remain active)
-- [ ] T028 [US1] Wire MealTypeChips to FamilyService.updateMealTypes in FamiliaConfiguracion screen (tap chip → toggle state → persist via FamilyService → UI reflects change)
+- [X] T027 [US1] Implement MealTypeChips component in `src/components/MealTypeChips.tsx` (toggle chips: active state = green/rounded, inactive state = crema/rounded. Labels: Desayuno, Comida, Cena, Snack. At least 1 must remain active)
+- [X] T028 [US1] Wire MealTypeChips to FamilyService.updateMealTypes in FamiliaConfiguracion screen (tap chip → toggle state → persist via FamilyService → UI reflects change)
 
 **Checkpoint**: Meal type chips visible in FamiliaConfiguracion, toggling persists to Family.activeMealTypes.
 

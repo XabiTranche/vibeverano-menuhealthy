@@ -17,21 +17,21 @@
 
 ## Phase 2: Foundational
 
-- [ ] T001: WatermelonDB schema for ShoppingList + ShoppingItem tables in `src/database/schema.ts`
+- [X] T001: WatermelonDB schema for ShoppingList + ShoppingItem tables in `src/database/schema.ts`
   - Add `shopping_lists` table: id, family_id, week_id, menu_id, status (generated|adjusted|in_use|completed), unmapped_recipes (JSON string), generated_at, updated_at
   - Add `shopping_items` table: id, list_id, ingredient_id, ingredient_name, approximate_quantity (nullable), unit (nullable), category (fruits_vegetables|meats|dairy|cereals|other), status (pending|bought|available_at_home), last_modified_by (nullable), last_modified_at
   - Add compound index: shopping_lists (family_id + week_id) UNIQUE
   - Add compound indexes: shopping_items (list_id + category), shopping_items (list_id + status)
   - Ref: data-model.md Indexes section
 
-- [ ] T002: [P] Migration + Supabase tables + RLS + Realtime subscriptions on shopping_items
+- [X] T002: [P] Migration + Supabase tables + RLS + Realtime subscriptions on shopping_items
   - WatermelonDB migration file in `src/database/migrations/`
   - Supabase SQL: CREATE TABLE shopping_lists, shopping_items with same schema
   - RLS policies: family members can read/write their own family's lists
   - Enable Supabase Realtime on `shopping_items` table (granularity: per-item)
   - Sync strategy: last-write-wins per item based on last_modified_at
 
-- [ ] T003: [P] i18n namespace `003-shopping` with category labels, status labels, actions
+- [X] T003: [P] i18n namespace `003-shopping` with category labels, status labels, actions
   - File: `src/i18n/namespaces/shopping-list.json`
   - Category labels: FRUTAS Y VERDURAS, CARNES Y PESCADOS, LÁCTEOS, CEREALES Y LEGUMBRES, OTROS
   - Status labels: Pendiente, Comprado, Ya lo tengo
@@ -46,21 +46,21 @@
 
 > **User Story 1**: Como responsable de la compra familiar, quiero que la aplicación convierta el menú semanal aprobado en una lista de la compra, para ahorrar tiempo y evitar olvidos.
 
-- [ ] T004: [P] [US1] Create ShoppingList model in `src/models/ShoppingList.ts`
+- [X] T004: [P] [US1] Create ShoppingList model in `src/models/ShoppingList.ts`
   - Extend WatermelonDB Model class
   - Fields: familyId, weekId, menuId, status, unmappedRecipes (JSON), generatedAt, updatedAt
   - Associations: hasMany ShoppingItem
   - Validation: status must be one of ShoppingListStatus enum values
   - Lifecycle transitions per data-model.md: generated → adjusted → in_use → completed
 
-- [ ] T005: [P] [US1] Create ShoppingItem model in `src/models/ShoppingItem.ts`
+- [X] T005: [P] [US1] Create ShoppingItem model in `src/models/ShoppingItem.ts`
   - Extend WatermelonDB Model class
   - Fields: listId, ingredientId, ingredientName, approximateQuantity, unit, category, status, lastModifiedBy, lastModifiedAt
   - Associations: belongsTo ShoppingList
   - Validation: category must be one of ShoppingCategory, status must be one of ShoppingItemStatus
   - ingredientName denormalized from MasterIngredient for offline display
 
-- [ ] T006: [US1] Implement ConsolidationService in `src/services/ConsolidationService.ts`
+- [X] T006: [US1] Implement ConsolidationService in `src/services/ConsolidationService.ts`
   - Traverse PlannedMeal → RecipeIngredient → MasterIngredient
   - Aggregate by MasterIngredient.id (same ingredientId = same line)
   - Sum quantities when units match
@@ -71,7 +71,7 @@
   - Stateless service — pure function of menu data + catalog data
   - Must work offline (reads from WatermelonDB local data)
 
-- [ ] T007: [US1] Implement ListGeneratorService in `src/services/ListGeneratorService.ts`
+- [X] T007: [US1] Implement ListGeneratorService in `src/services/ListGeneratorService.ts`
   - `generateList(familyId, weekId)`: per contract — verify approved menu (spec 002 ApprovalService), verify no existing list (unique constraint), call ConsolidationService, create ShoppingList + ShoppingItems, return list
   - `regenerateList(listId)`: per contract — re-read approved menu, regenerate consolidation, preserve bought/available items, remove obsolete pending items, add new pending items, update quantities if changed
   - `getList(listId)`: eager load with items
@@ -80,7 +80,7 @@
   - All operations work offline (WatermelonDB)
   - Performance: <5s online, <3s offline
 
-- [ ] T008: [US1] Wire generation to UI: "Generar lista" button after menu approval triggers ListGeneratorService.generateList
+- [X] T008: [US1] Wire generation to UI: "Generar lista" button after menu approval triggers ListGeneratorService.generateList
   - Button placement: after menu approval confirmation (spec 002 flow)
   - Loading state during generation (<5s budget)
   - On success: navigate to ShoppingListView
@@ -110,7 +110,7 @@
 > **User Story 3**: Como persona encargada de comprar, quiero que la lista esté ordenada por categorías útiles, para hacer la compra de forma más rápida y con menos fricción.
 > **Wireframe ref**: 04-lista-compra.md — uppercase muted headers, no background, text-only separators.
 
-- [ ] T010: [US3] Implement CategorySection component in `src/components/CategorySection.tsx`
+- [X] T010: [US3] Implement CategorySection component in `src/components/CategorySection.tsx`
   - Collapsible section per category
   - Categories in order: FRUTAS Y VERDURAS → CARNES Y PESCADOS → LÁCTEOS → CEREALES Y LEGUMBRES → OTROS
   - Header: uppercase text, muted color, no background (per wireframe 04: "Sin fondo — solo texto para separar visualmente")
@@ -118,7 +118,7 @@
   - Collapsed state persists per session (not across restarts)
   - i18n: category labels from `003-shopping` namespace
 
-- [ ] T011: [US3] Implement ShoppingListView screen in `src/screens/ShoppingListView/`
+- [X] T011: [US3] Implement ShoppingListView screen in `src/screens/ShoppingListView/`
   - Per wireframe 04 layout:
     - Title: "Lista de la compra" (h1)
     - Week reference: "Semana del X al Y mes" (subtitle)
@@ -171,7 +171,7 @@
 > **User Story 5**: Como persona que está en el supermercado, quiero ir tachando productos de la lista en mi móvil a medida que los meto en el carro, para no perderme nada.
 > **Wireframe 04 is THE reference** for all visual decisions in this phase.
 
-- [ ] T015: [US5] Implement ShoppingItemRow component in `src/components/ShoppingItemRow.tsx`
+- [X] T015: [US5] Implement ShoppingItemRow component in `src/components/ShoppingItemRow.tsx`
   - Per wireframe 04 design:
     - Row height: 52px (touch target — "Zonas de tap de 52px")
     - Pending state: white background, circular checkbox (grey border) left, ingredient name 15px center, quantity right in muted text
@@ -180,13 +180,13 @@
   - Tap anywhere on row = mark bought (ChecklistService.markAsBought)
   - Accessibility: role=checkbox, aria-checked state, label includes ingredient name + quantity
 
-- [ ] T016: [US5] Implement state persistence (tap → status changes in WatermelonDB → persists across app restarts)
+- [X] T016: [US5] Implement state persistence (tap → status changes in WatermelonDB → persists across app restarts)
   - On tap: update ShoppingItem.status in WatermelonDB immediately
   - On app cold start: read all items from WatermelonDB → render with persisted status
   - Verify: close app → reopen → bought items remain bought (HU5 ac2)
   - No network required for persistence (offline-first)
 
-- [ ] T017: [US5] Implement ProgressBar component in `src/components/ProgressBar.tsx`
+- [X] T017: [US5] Implement ProgressBar component in `src/components/ProgressBar.tsx`
   - Counter format: "{{bought}}/{{total}}" (per wireframe 04: "un contador de progreso ("3/14") en verde")
   - Color: green
   - Position: top-right of ShoppingListView header area
@@ -194,7 +194,7 @@
   - Uses ChecklistService.getProgress for data
   - Does NOT count available_at_home in bought (separate semantics)
 
-- [ ] T018: [US5] Implement unmark gesture (tap on bought item → revert to pending)
+- [X] T018: [US5] Implement unmark gesture (tap on bought item → revert to pending)
   - Tap on bought item (crema background + strikethrough) → call ChecklistService.unmarkItem
   - Visual: item reverts to white background, empty checkbox, normal text
   - Per wireframe 04: "Desmarcar un ingrediente si se tachó por error"

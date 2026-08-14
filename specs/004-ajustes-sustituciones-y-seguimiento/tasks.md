@@ -47,22 +47,22 @@
   - Acceptance: WatermelonDB Model class with columns: weekId (string), count (number), regenerationSuggested (boolean, default false), updatedAt (number); typed with TypeScript interfaces; exported
   - Refs: data-model.md > SubstitutionCounter
 
-- [ ] T006 [US1] Implement RestrictionValidatorService in `src/services/RestrictionValidatorService.ts`
+- [X] T006 [US1] Implement RestrictionValidatorService in `src/services/RestrictionValidatorService.ts`
   - Path: `src/services/RestrictionValidatorService.ts`, `tests/unit/services/RestrictionValidatorService.test.ts`
   - Acceptance: validateAgainstRestrictions(memberIds, newRecipeId) loads mandatory restrictions from spec 001 CriteriaService for each affected member; loads CompatibilityTags of newRecipeId from spec 005; if any tag matches a mandatory restriction (allergy, intolerance, ethical_religious) → returns blocked=true with BlockedRestriction details; if no block → checks preferences (disliked+strong) and goals → returns warnings (type preference|goal|nutritional, severity info); works 100% offline with local WatermelonDB data; <3s execution; unit tests cover: no restrictions, single block, multiple blocks, warnings only, mixed block+warning
   - Refs: contracts/substitution-service.md > validateSubstitution behavior, spec.md > FR-002, FR-012, NFR-002, NFR-006
 
-- [ ] T007 [US1] Implement SubstitutionService in `src/services/SubstitutionService.ts`
+- [X] T007 [US1] Implement SubstitutionService in `src/services/SubstitutionService.ts`
   - Path: `src/services/SubstitutionService.ts`, `tests/unit/services/SubstitutionService.test.ts`
   - Acceptance: validateSubstitution(mealId, newRecipeId) loads PlannedMeal → gets memberIds → delegates to RestrictionValidatorService → returns ValidationResult; applySubstitution(mealId, newRecipeId, reason?) validates precondition, updates PlannedMeal.recipeId, creates MealAdjustment, calls SignalRecorderService (async), increments SubstitutionCounter (creates if not exists), calls HistoryService.createSnapshot if first substitution, calls ListSyncService if menu approved, sets regenerationSuggested if count≥5; getAdjustments(weekId) queries by weekId sorted timestamp DESC; getSubstitutionCount(weekId) reads counter or returns 0; error cases: MealNotFoundError, RecipeNotFoundError, SameRecipeError; unit tests cover all paths including error cases
   - Refs: contracts/substitution-service.md (full contract), spec.md > FR-001, FR-003, FR-004, FR-011
 
-- [ ] T008 [US1] Implement MealSubstitution screen in `src/screens/MealSubstitution/`
+- [X] T008 [US1] Implement MealSubstitution screen in `src/screens/MealSubstitution/`
   - Path: `src/screens/MealSubstitution/index.tsx`, `src/screens/MealSubstitution/MealSubstitution.test.tsx`
   - Acceptance: Opened from ⇄ button with mealId param; shows current meal info at top (recipe name, mealType, day); displays recipe catalog filtered by mealType (reuses spec 005 RecipeCatalog components); user picks any recipe freely (FR-003); on selection, calls SubstitutionService.validateSubstitution; navigates to SubstitutionConfirm with validation result; back button cancels flow; component test verifies render + selection + navigation
   - Refs: spec.md > FR-001, FR-003; plan.md > Project Structure > screens
 
-- [ ] T009 [US1] Implement SubstitutionConfirm screen in `src/screens/SubstitutionConfirm/`
+- [X] T009 [US1] Implement SubstitutionConfirm screen in `src/screens/SubstitutionConfirm/`
   - Path: `src/screens/SubstitutionConfirm/index.tsx`, `src/screens/SubstitutionConfirm/SubstitutionConfirm.test.tsx`
   - Acceptance: Receives ValidationResult + mealId + newRecipeId; if blocked: shows red ValidationResultBanner with blockReason + blockedRestrictions details, only Cancel button available; if valid: shows green banner + optional WarningDismissable components for each warning, Confirm + Cancel buttons; on Confirm: calls SubstitutionService.applySubstitution, shows success feedback, navigates back to WeekPlanner; optional reason picker shown before final confirm (FR-010); component test verifies blocked state, valid state with warnings, confirm flow, cancel flow
   - Refs: spec.md > FR-002, FR-010, FR-012; contracts/substitution-service.md > ValidationResult
@@ -171,7 +171,7 @@
   - Acceptance: Test performs full substitution flow with network mocked as offline; verifies MealAdjustment persists in local WatermelonDB; verifies PlannedMeal.recipeId updated locally; verifies SubstitutionCounter incremented locally; simulates reconnect; verifies sync push sends records to "server" (mocked Supabase); covers: substitute offline → sync, validate offline (restrictions cached locally), counter increments offline
   - Refs: quickstart.md (if exists), spec.md > NFR-001, NFR-002
 
-- [ ] T024 Wire ⇄ button in MealCard (spec 002 WeekPlanner) to open MealSubstitution screen with correct mealId context
+- [X] T024 Wire ⇄ button in MealCard (spec 002 WeekPlanner) to open MealSubstitution screen with correct mealId context
   - Path: `src/components/MealCard.tsx` (spec 002 component, extend), `src/navigation/substitution-navigator.ts`
   - Acceptance: ⇄ button on MealCard navigates to MealSubstitution screen with params { mealId, weekId, mealType, currentRecipeId }; navigation registered in app navigator; works for both draft and approved menus; button visible and accessible; integration: pressing ⇄ opens correct screen with pre-filled context
   - Refs: wireframes/01 (MealCard with ⇄ button); plan.md > Dependencies > spec 002

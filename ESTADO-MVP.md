@@ -149,7 +149,7 @@ El MVP funcional está completado. El flujo completo "configurar familia → gen
 | Services implementados | 5 (Recipe, Ingredient, Family, Planner, Shopping) |
 | Seed data | 50 ingredientes + 10 recetas base |
 | Specs completadas | 5/5 convergidas |
-| Tasks completadas MVP | ~45/163 total |
+| Tasks completadas MVP | 84/165 total |
 | Flujo E2E funcional | ✅ Completo |
 
 ---

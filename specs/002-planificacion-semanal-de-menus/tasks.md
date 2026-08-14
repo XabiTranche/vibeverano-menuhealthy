@@ -17,7 +17,7 @@
 
 ## Phase 2: Foundational — Schema, Migrations, Backend & i18n
 
-- [ ] T001: Create WatermelonDB schema extension for spec 002 tables in `src/database/schema.ts`
+- [X] T001: Create WatermelonDB schema extension for spec 002 tables in `src/database/schema.ts`
   - Add `planned_weeks` table: id, family_id, start_date, end_date, status (draft|approved|incompatible|replaced), approved_at, replaced_by, created_at, updated_at
   - Add `menu_proposals` table: id, week_id, criteria_snapshot (json), generated_at, generation_source (backend|offline), complexity_applied (json)
   - Add `planned_meals` table: id, proposal_id, day, meal_type (breakfast|lunch|dinner|snack), recipe_id, status (planned|out_of_house), variants (json)
@@ -25,19 +25,19 @@
   - Add `meal_explanations` table: id, proposal_id, summary, criteria_respected (json), conflicts_detected (json), compromises_applied (json)
   - Add indexes: idx_week_family_status, idx_week_family_dates, idx_meal_proposal_day, idx_proposal_week, idx_complexity_family
 
-- [ ] T002: [P] Create migration for spec 002 tables in `src/database/migrations/`
+- [X] T002: [P] Create migration for spec 002 tables in `src/database/migrations/`
   - Migration version increment from spec 001/005 baseline
   - All 5 tables created with correct column types
   - Indexes created
   - Verify migration runs cleanly on fresh DB and on existing DB with spec 001+005 tables
 
-- [ ] T003: [P] Configure Supabase tables + RLS for spec 002
+- [X] T003: [P] Configure Supabase tables + RLS for spec 002
   - Create SQL migration for: planned_weeks, menu_proposals, planned_meals, complexity_configs, meal_explanations
   - RLS policies: users can only access rows where family_id matches their household membership
   - Enable realtime subscriptions on planned_weeks.status changes
   - Foreign keys: planned_weeks.family_id → families.id, menu_proposals.week_id → planned_weeks.id, planned_meals.proposal_id → menu_proposals.id, planned_meals.recipe_id → family_recipes.id, complexity_configs.family_id → families.id
 
-- [ ] T004: [P] Setup i18n namespace `002-planner` with `src/i18n/002-planner/es.json`
+- [X] T004: [P] Setup i18n namespace `002-planner` with `src/i18n/002-planner/es.json`
   - Keys: weekPlanner.title, weekPlanner.weekOf, weekPlanner.statusDraft, weekPlanner.statusApproved, weekPlanner.statusModified, weekPlanner.statusIncompatible
   - Keys: mealCard.kcal, mealCard.protein, mealCard.substitute, mealCard.outOfHouse
   - Keys: emptySlot.addBreakfast, emptySlot.addLunch, emptySlot.addDinner, emptySlot.addSnack
@@ -52,33 +52,33 @@
 
 **Goal**: Generate weekly menu proposal respecting family criteria (restrictions, preferences, goals, complexity, no-repeat rules).
 
-- [ ] T005: [P] [US1] Create PlannedWeek model in `src/models/PlannedWeek.ts`
+- [X] T005: [P] [US1] Create PlannedWeek model in `src/models/PlannedWeek.ts`
   - WatermelonDB Model class extending Model
   - Fields: familyId, startDate, endDate, status, approvedAt, replacedBy, createdAt, updatedAt
   - Associations: hasMany MenuProposal (via weekId)
   - Computed: isApproved, isDraft, isIncompatible, dateRangeLabel
   - Validation: endDate >= startDate, max 7 days span
 
-- [ ] T006: [P] [US1] Create MenuProposal model in `src/models/MenuProposal.ts`
+- [X] T006: [P] [US1] Create MenuProposal model in `src/models/MenuProposal.ts`
   - WatermelonDB Model class extending Model
   - Fields: weekId, criteriaSnapshot (json), generatedAt, generationSource, complexityApplied (json)
   - Associations: belongsTo PlannedWeek, hasMany PlannedMeal (via proposalId), hasOne MealExplanation
   - Computed: source label for UI display
 
-- [ ] T007: [P] [US1] Create PlannedMeal model in `src/models/PlannedMeal.ts`
+- [X] T007: [P] [US1] Create PlannedMeal model in `src/models/PlannedMeal.ts`
   - WatermelonDB Model class extending Model
   - Fields: proposalId, day, mealType, recipeId, status, variants (json)
   - Associations: belongsTo MenuProposal, belongsTo FamilyRecipe (spec 005)
   - Computed: hasVariants, isOutOfHouse, mealTypeColor (orange/green/purple/terracotta per wireframe)
   - Enum: MealType = 'breakfast' | 'lunch' | 'dinner' | 'snack'
 
-- [ ] T008: [P] [US1] Create ComplexityConfig model in `src/models/ComplexityConfig.ts`
+- [X] T008: [P] [US1] Create ComplexityConfig model in `src/models/ComplexityConfig.ts`
   - WatermelonDB Model class extending Model
   - Fields: familyId, weekdayLevel, weekendLevel
   - Enum: ComplexityLevel = 'quick' | 'medium' | 'elaborate'
   - Constraint: one per familyId (enforced in service layer)
 
-- [ ] T009: [US1] Implement PlanGeneratorService in `src/services/PlanGeneratorService.ts`
+- [X] T009: [US1] Implement PlanGeneratorService in `src/services/PlanGeneratorService.ts`
   - Full pipeline orchestration:
     1. `fetchCriteria(familyId)` → load restrictions, preferences, goals from spec 001 models
     2. `filterRecipes(allRecipes, restrictions)` → exclude recipes violating mandatory restrictions
@@ -134,7 +134,7 @@
 
 ### T014: [US2] WeekPlanner Screen — `src/screens/WeekPlanner/`
 
-- [ ] T014: [US2] Implement WeekPlanner screen — CORE SCREEN per wireframe 01
+- [X] T014: [US2] Implement WeekPlanner screen — CORE SCREEN per wireframe 01
 
   **Layout structure** (top to bottom):
   ```
@@ -184,7 +184,7 @@
 
 ### T015: [US2] WeekSelector Component — `src/components/WeekSelector.tsx`
 
-- [ ] T015: [US2] Implement WeekSelector component
+- [X] T015: [US2] Implement WeekSelector component
 
   **Visual spec** (per wireframe 01):
   ```
@@ -229,7 +229,7 @@
 
 ### T016: [US2] MealCard Component — `src/components/MealCard.tsx`
 
-- [ ] T016: [US2] Implement MealCard component
+- [X] T016: [US2] Implement MealCard component
 
   **Visual spec** (per wireframe 01 — the MOST USED component in the app):
   ```
@@ -288,7 +288,7 @@
 
 ### T017: [US2] EmptySlot Component — `src/components/EmptySlot.tsx`
 
-- [ ] T017: [US2] Implement EmptySlot component
+- [X] T017: [US2] Implement EmptySlot component
 
   **Visual spec** (per wireframe 01):
   ```
@@ -329,7 +329,7 @@
 
 ### T018: [US2] DayView Section — within WeekPlanner
 
-- [ ] T018: [US2] Implement DayView section within WeekPlanner
+- [X] T018: [US2] Implement DayView section within WeekPlanner
 
   **Visual spec**:
   ```
@@ -365,7 +365,7 @@
 
 ### T019: [US2] "Out of House" Marking
 
-- [ ] T019: [US2] Implement "out of house" marking via long press
+- [X] T019: [US2] Implement "out of house" marking via long press
 
   **Interaction flow**:
   1. User long-presses (500ms) on a MealCard
@@ -385,7 +385,7 @@
 
 ### T020: [US2] Wire WeekPlanner to PlanGeneratorService
 
-- [ ] T020: [US2] Wire WeekPlanner to PlanGeneratorService (generate → display)
+- [X] T020: [US2] Wire WeekPlanner to PlanGeneratorService (generate → display)
 
   **Flow**:
   1. User lands on WeekPlanner with no proposal for current week
@@ -415,7 +415,7 @@
 
 **Goal**: Approve proposal as active menu for the week. Enables lista de la compra generation (spec 003).
 
-- [ ] T021: [US4] Implement ApprovalService in `src/services/ApprovalService.ts`
+- [X] T021: [US4] Implement ApprovalService in `src/services/ApprovalService.ts`
   - `approveProposal(proposalId)` → PlannedWeek.status → 'approved', set approvedAt timestamp
   - `replaceApproved(weekId, newProposalId)` → old status → 'replaced' + replacedBy set, new → 'approved'
   - `getApprovedWeek(familyId, dateRange)` → find PlannedWeek with status 'approved' overlapping dateRange
@@ -424,7 +424,7 @@
   - Error types: AlreadyApprovedError, NotApprovedError, InvalidStateError
   - Offline-capable: all operations via WatermelonDB, sync in background
 
-- [ ] T022: [US4] Implement "Aprobar semana" button in WeekPlanner (per wireframe 01)
+- [X] T022: [US4] Implement "Aprobar semana" button in WeekPlanner (per wireframe 01)
 
   **Visual spec**:
   ```
@@ -452,14 +452,14 @@
   - Success feedback: haptic (success), brief toast "Semana aprobada ✓"
   - Hidden when: PlannedWeek.status is already 'approved' (show "✓ Aprobada" label instead)
 
-- [ ] T023: [US4] Implement status badge updates in WeekSelector
+- [X] T023: [US4] Implement status badge updates in WeekSelector
   - On approval: badge transitions from "● En borrador" → "✓ Aprobada" with brief animation (fade)
   - On modification post-approval: badge shows "⚠ Modificada" (amber)
   - On incompatibility detection: badge shows "⚠ Incompatible" (red)
   - Reactive: observes PlannedWeek.status via WatermelonDB observable
   - No manual refresh needed — UI updates immediately on status write
 
-- [ ] T024: [US4] Implement replace flow (if week already approved)
+- [X] T024: [US4] Implement replace flow (if week already approved)
   - Trigger: user generates new proposal for an already-approved week
   - Confirmation dialog: "Ya tienes un menú aprobado para esta semana. ¿Quieres reemplazarlo?"
   - Options: "Reemplazar" (destructive, red text) / "Cancelar"
