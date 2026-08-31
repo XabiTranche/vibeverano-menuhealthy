@@ -170,21 +170,22 @@ export const PlannerService = {
     const familyRecipeList = allFamilyRecipes ?? [];
     let safeFamilyRecipes = familyRecipeList;
 
-    if (restrictedIngredientIds.size > 0 && familyRecipeList.length > 0) {
-      // Get ingredients for all family recipes to check restrictions
-      const familyRecipeIds = familyRecipeList.map((r) => r.id);
+    // Get ingredients for all family recipes (needed for restrictions + preferences)
+    const familyRecipeIds = familyRecipeList.map((r) => r.id);
+    const ingredientsByRecipe = new Map<string, Array<{ ingredient_id: string }>>();
+    if (familyRecipeIds.length > 0) {
       const { data: familyIngredients } = await supabase
         .from('recipe_ingredients')
         .select('recipe_id, ingredient_id')
         .in('recipe_id', familyRecipeIds);
-
-      const ingredientsByRecipe = new Map<string, Array<{ ingredient_id: string }>>();
       for (const ing of familyIngredients ?? []) {
         const list = ingredientsByRecipe.get(ing.recipe_id) ?? [];
         list.push({ ingredient_id: ing.ingredient_id });
         ingredientsByRecipe.set(ing.recipe_id, list);
       }
+    }
 
+    if (restrictedIngredientIds.size > 0 && familyRecipeList.length > 0) {
       safeFamilyRecipes = familyRecipeList.filter((r) => {
         const ings = ingredientsByRecipe.get(r.id) ?? [];
         return isSafe(ings);
@@ -208,12 +209,66 @@ export const PlannerService = {
 
     console.log(`[PlannerService] Family: ${safeFamilyRecipes.length} safe, Base: ${safeBaseRecipes.length} safe, Restrictions: ${restrictedAllergens.join(', ')}`);
 
-    // 5. Build unified pool per meal type — family recipes first, then base
+    // 4b. Load food preferences for all active members
+    let likedFoods: string[] = [];
+    let dislikedFoods: string[] = [];
+    if (memberIds.length > 0) {
+      const { data: prefs } = await supabase
+        .from('food_preferences')
+        .select('food_item, type, intensity')
+        .in('member_id', memberIds);
+
+      for (const p of prefs ?? []) {
+        const item = p.food_item.toLowerCase();
+        if (p.type === 'liked') {
+          likedFoods.push(item);
+        } else {
+          dislikedFoods.push(item);
+        }
+      }
+    }
+
+    // Build sets of ingredient IDs that are liked/disliked
+    // Match food_item text against master ingredient canonical_name
+    const likedIngredientIds = new Set<string>();
+    const dislikedIngredientIds = new Set<string>();
+    if (likedFoods.length > 0 || dislikedFoods.length > 0) {
+      for (const ing of masterIngredients ?? []) {
+        const name = ing.canonical_name.toLowerCase();
+        for (const liked of likedFoods) {
+          if (name.includes(liked) || liked.includes(name)) {
+            likedIngredientIds.add(ing.id);
+            break;
+          }
+        }
+        for (const disliked of dislikedFoods) {
+          if (name.includes(disliked) || disliked.includes(name)) {
+            dislikedIngredientIds.add(ing.id);
+            break;
+          }
+        }
+      }
+    }
+
+    // Score a recipe based on preferences: +1 per liked ingredient, -1 per disliked
+    const scoreRecipeIngredients = (ingredients: Array<{ ingredient_id: string }>): number => {
+      let score = 0;
+      for (const ing of ingredients) {
+        if (likedIngredientIds.has(ing.ingredient_id)) score += 1;
+        if (dislikedIngredientIds.has(ing.ingredient_id)) score -= 1;
+      }
+      return score;
+    };
+
+    console.log(`[PlannerService] Preferences: ${likedFoods.length} liked, ${dislikedFoods.length} disliked`);
+
+    // 5. Build unified pool per meal type with preference scores
     interface UnifiedRecipe {
       id: string;
       name: string;
       meal_type: MealType;
       source: 'family' | 'base';
+      prefScore: number;
     }
 
     const poolByType: Record<MealType, UnifiedRecipe[]> = {
@@ -225,21 +280,25 @@ export const PlannerService = {
 
     // Add family recipes first (higher priority)
     for (const r of safeFamilyRecipes) {
+      const ings = ingredientsByRecipe.get(r.id) ?? [];
       poolByType[r.meal_type as MealType]?.push({
         id: r.id,
         name: r.name,
         meal_type: r.meal_type as MealType,
         source: 'family',
+        prefScore: scoreRecipeIngredients(ings),
       });
     }
 
     // Then base recipes
     for (const r of safeBaseRecipes) {
+      const ings = (r.ingredients ?? []) as Array<{ ingredient_id: string }>;
       poolByType[r.meal_type as MealType]?.push({
         id: r.id,
         name: r.name,
         meal_type: r.meal_type as MealType,
         source: 'base',
+        prefScore: scoreRecipeIngredients(ings),
       });
     }
 
@@ -268,6 +327,8 @@ export const PlannerService = {
           members_count: memberIds.length,
           safe_family_recipes: safeFamilyRecipes.length,
           safe_base_recipes: safeBaseRecipes.length,
+          liked_foods: likedFoods,
+          disliked_foods: dislikedFoods,
         },
       })
       .select()
@@ -306,8 +367,9 @@ export const PlannerService = {
           if (filtered.length > 0) available = filtered;
         }
 
-        // Pick random recipe from pool
-        const recipe = available[Math.floor(Math.random() * available.length)];
+        // Pick recipe weighted by preference score
+        // Higher score = more likely to be picked, but not guaranteed
+        const recipe = pickWeightedByPreference(available);
 
         if (mealType === 'lunch') usedLunch.add(recipe.id);
         if (mealType === 'dinner') usedDinner.add(recipe.id);
@@ -368,6 +430,27 @@ export const PlannerService = {
     return data;
   },
 };
+
+// Helper: pick a recipe weighted by preference score
+// Recipes with higher scores are more likely to be selected
+// Recipes with negative scores can still be picked (preferences are non-blocking)
+function pickWeightedByPreference<T extends { prefScore: number }>(items: T[]): T {
+  if (items.length === 1) return items[0];
+
+  // Shift scores so the minimum is at least 1 (all recipes get a chance)
+  const minScore = Math.min(...items.map((i) => i.prefScore));
+  const shift = minScore < 0 ? Math.abs(minScore) + 1 : 1;
+
+  const weights = items.map((item) => item.prefScore + shift);
+  const totalWeight = weights.reduce((a, b) => a + b, 0);
+
+  let random = Math.random() * totalWeight;
+  for (let i = 0; i < items.length; i++) {
+    random -= weights[i];
+    if (random <= 0) return items[i];
+  }
+  return items[items.length - 1];
+}
 
 // Helper: get array of date strings between two dates
 function getDaysBetween(start: string, end: string): string[] {

@@ -19,6 +19,9 @@ import type {
   RestrictionCategory,
   NutritionalGoal,
   GoalType,
+  FoodPreference,
+  PreferenceType,
+  PreferenceIntensity,
 } from '../../types/database';
 
 const CATEGORY_LABELS: Record<RestrictionCategory, string> = {
@@ -47,9 +50,11 @@ export default function MemberDetailScreen() {
   const [member, setMember] = useState<FamilyMember | null>(null);
   const [restrictions, setRestrictions] = useState<DietaryRestriction[]>([]);
   const [goals, setGoals] = useState<NutritionalGoal[]>([]);
+  const [preferences, setPreferences] = useState<FoodPreference[]>([]);
   const [loading, setLoading] = useState(true);
   const [showAddRestriction, setShowAddRestriction] = useState(false);
   const [showAddGoal, setShowAddGoal] = useState(false);
+  const [showAddPreference, setShowAddPreference] = useState(false);
 
   const loadData = useCallback(async () => {
     try {
@@ -73,6 +78,13 @@ export default function MemberDetailScreen() {
         .eq('member_id', id)
         .eq('is_active', true);
       setGoals(g ?? []);
+
+      const { data: prefs } = await supabase
+        .from('food_preferences')
+        .select('*')
+        .eq('member_id', id)
+        .order('created_at');
+      setPreferences(prefs ?? []);
     } catch (err) {
       console.error('[MemberDetail] Error:', err);
     } finally {
@@ -92,6 +104,11 @@ export default function MemberDetailScreen() {
   const deleteGoal = async (goalId: string) => {
     await supabase.from('nutritional_goals').delete().eq('id', goalId);
     setGoals((prev) => prev.filter((g) => g.id !== goalId));
+  };
+
+  const deletePreference = async (prefId: string) => {
+    await supabase.from('food_preferences').delete().eq('id', prefId);
+    setPreferences((prev) => prev.filter((p) => p.id !== prefId));
   };
 
   if (loading || !member) {
@@ -169,6 +186,60 @@ export default function MemberDetailScreen() {
             ))
           )}
         </View>
+
+        {/* Food Preferences */}
+        <View style={styles.section}>
+          <View style={styles.sectionHeaderRow}>
+            <Text style={styles.sectionTitle}>Preferencias alimentarias</Text>
+            <TouchableOpacity onPress={() => setShowAddPreference(true)}>
+              <Text style={styles.addButton}>+ Añadir</Text>
+            </TouchableOpacity>
+          </View>
+
+          {preferences.length === 0 ? (
+            <Text style={styles.emptyText}>Sin preferencias registradas</Text>
+          ) : (
+            <>
+              {/* Liked */}
+              {preferences.filter((p) => p.type === 'liked').length > 0 && (
+                <Text style={styles.prefGroupLabel}>👍 Le gusta</Text>
+              )}
+              {preferences.filter((p) => p.type === 'liked').map((p) => (
+                <View key={p.id} style={styles.prefRow}>
+                  <View style={[styles.prefDot, { backgroundColor: '#4CAF50' }]} />
+                  <View style={styles.prefInfo}>
+                    <Text style={styles.prefName}>{p.food_item}</Text>
+                    <Text style={styles.prefMeta}>
+                      {p.intensity === 'strong' ? 'Mucho' : 'Un poco'}
+                    </Text>
+                  </View>
+                  <TouchableOpacity onPress={() => deletePreference(p.id)}>
+                    <Text style={styles.deleteBtn}>✕</Text>
+                  </TouchableOpacity>
+                </View>
+              ))}
+
+              {/* Disliked */}
+              {preferences.filter((p) => p.type === 'disliked').length > 0 && (
+                <Text style={styles.prefGroupLabel}>👎 No le gusta</Text>
+              )}
+              {preferences.filter((p) => p.type === 'disliked').map((p) => (
+                <View key={p.id} style={styles.prefRow}>
+                  <View style={[styles.prefDot, { backgroundColor: '#F44336' }]} />
+                  <View style={styles.prefInfo}>
+                    <Text style={styles.prefName}>{p.food_item}</Text>
+                    <Text style={styles.prefMeta}>
+                      {p.intensity === 'strong' ? 'Nada' : 'Poco'}
+                    </Text>
+                  </View>
+                  <TouchableOpacity onPress={() => deletePreference(p.id)}>
+                    <Text style={styles.deleteBtn}>✕</Text>
+                  </TouchableOpacity>
+                </View>
+              ))}
+            </>
+          )}
+        </View>
       </ScrollView>
 
       {/* Add Restriction Modal */}
@@ -199,6 +270,23 @@ export default function MemberDetailScreen() {
             is_active: true,
           });
           setShowAddGoal(false);
+          loadData();
+        }}
+      />
+
+      {/* Add Preference Modal */}
+      <AddPreferenceModal
+        visible={showAddPreference}
+        onClose={() => setShowAddPreference(false)}
+        restrictions={restrictions}
+        onSave={async (foodItem, type, intensity) => {
+          await supabase.from('food_preferences').insert({
+            member_id: id,
+            food_item: foodItem,
+            type,
+            intensity,
+          });
+          setShowAddPreference(false);
           loadData();
         }}
       />
@@ -315,6 +403,153 @@ function AddGoalModal({
   );
 }
 
+function AddPreferenceModal({
+  visible,
+  onClose,
+  onSave,
+  restrictions,
+}: {
+  visible: boolean;
+  onClose: () => void;
+  onSave: (foodItem: string, type: PreferenceType, intensity: PreferenceIntensity) => Promise<void>;
+  restrictions: DietaryRestriction[];
+}) {
+  const [foodItem, setFoodItem] = useState('');
+  const [type, setType] = useState<PreferenceType>('liked');
+  const [intensity, setIntensity] = useState<PreferenceIntensity>('mild');
+  const [saving, setSaving] = useState(false);
+  const [warning, setWarning] = useState('');
+
+  // Check for coherence conflict with restrictions
+  const checkCoherence = (item: string, prefType: PreferenceType) => {
+    if (prefType !== 'liked' || !item.trim()) {
+      setWarning('');
+      return;
+    }
+    const itemLower = item.trim().toLowerCase();
+    const conflict = restrictions.find(
+      (r) =>
+        (r.category === 'allergy' || r.category === 'intolerance') &&
+        r.name.toLowerCase().includes(itemLower),
+    );
+    if (conflict) {
+      setWarning(
+        `⚠ "${item}" conflicta con la restricción "${conflict.name}" (${CATEGORY_LABELS[conflict.category]}). La restricción tiene prioridad.`,
+      );
+    } else {
+      setWarning('');
+    }
+  };
+
+  const handleFoodItemChange = (text: string) => {
+    setFoodItem(text);
+    checkCoherence(text, type);
+  };
+
+  const handleTypeChange = (newType: PreferenceType) => {
+    setType(newType);
+    checkCoherence(foodItem, newType);
+  };
+
+  const handleSave = async () => {
+    if (!foodItem.trim()) return;
+    setSaving(true);
+    await onSave(foodItem.trim(), type, intensity);
+    setFoodItem('');
+    setType('liked');
+    setIntensity('mild');
+    setWarning('');
+    setSaving(false);
+  };
+
+  return (
+    <Modal visible={visible} animationType="slide" transparent>
+      <View style={modalStyles.overlay}>
+        <View style={modalStyles.content}>
+          <Text style={modalStyles.title}>Nueva preferencia</Text>
+
+          <Text style={modalStyles.label}>Alimento</Text>
+          <TextInput
+            style={modalStyles.input}
+            value={foodItem}
+            onChangeText={handleFoodItemChange}
+            placeholder="Ej: Pollo, Brócoli, Pescado..."
+          />
+
+          <Text style={modalStyles.label}>Tipo</Text>
+          <View style={modalStyles.categoryRow}>
+            <TouchableOpacity
+              style={[
+                modalStyles.catChip,
+                type === 'liked' && { backgroundColor: '#4CAF50' },
+              ]}
+              onPress={() => handleTypeChange('liked')}
+            >
+              <Text style={[modalStyles.catText, type === 'liked' && { color: '#fff' }]}>
+                👍 Le gusta
+              </Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={[
+                modalStyles.catChip,
+                type === 'disliked' && { backgroundColor: '#F44336' },
+              ]}
+              onPress={() => handleTypeChange('disliked')}
+            >
+              <Text style={[modalStyles.catText, type === 'disliked' && { color: '#fff' }]}>
+                👎 No le gusta
+              </Text>
+            </TouchableOpacity>
+          </View>
+
+          <Text style={modalStyles.label}>Intensidad</Text>
+          <View style={modalStyles.categoryRow}>
+            <TouchableOpacity
+              style={[
+                modalStyles.catChip,
+                intensity === 'mild' && { backgroundColor: '#2196F3' },
+              ]}
+              onPress={() => setIntensity('mild')}
+            >
+              <Text style={[modalStyles.catText, intensity === 'mild' && { color: '#fff' }]}>
+                {type === 'liked' ? 'Un poco' : 'Poco'}
+              </Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={[
+                modalStyles.catChip,
+                intensity === 'strong' && { backgroundColor: '#2196F3' },
+              ]}
+              onPress={() => setIntensity('strong')}
+            >
+              <Text style={[modalStyles.catText, intensity === 'strong' && { color: '#fff' }]}>
+                {type === 'liked' ? 'Mucho' : 'Nada'}
+              </Text>
+            </TouchableOpacity>
+          </View>
+
+          {warning ? (
+            <View style={modalStyles.warningBox}>
+              <Text style={modalStyles.warningText}>{warning}</Text>
+            </View>
+          ) : null}
+
+          <View style={modalStyles.buttons}>
+            <TouchableOpacity style={modalStyles.cancelBtn} onPress={onClose}>
+              <Text style={modalStyles.cancelText}>Cancelar</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={modalStyles.saveBtn} onPress={handleSave} disabled={saving}>
+              <Text style={modalStyles.saveText}>
+                {warning ? 'Guardar con aviso' : 'Guardar'}
+              </Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </View>
+    </Modal>
+  );
+}
+
 const modalStyles = StyleSheet.create({
   overlay: { flex: 1, backgroundColor: 'rgba(0,0,0,0.5)', justifyContent: 'flex-end' },
   content: { backgroundColor: '#fff', borderTopLeftRadius: 20, borderTopRightRadius: 20, padding: 24, paddingBottom: 40 },
@@ -333,6 +568,8 @@ const modalStyles = StyleSheet.create({
   goalOption: { paddingVertical: 14, paddingHorizontal: 16, borderRadius: 8, backgroundColor: '#F5F5F5' },
   goalOptionActive: { backgroundColor: '#4CAF50' },
   goalOptionText: { fontSize: 15, fontWeight: '500', color: '#1a1a1a' },
+  warningBox: { backgroundColor: '#FFF3E0', borderRadius: 8, padding: 12, marginTop: 12, borderLeftWidth: 3, borderLeftColor: '#FF9800' },
+  warningText: { fontSize: 13, color: '#E65100', lineHeight: 18 },
 });
 
 const styles = StyleSheet.create({
@@ -367,4 +604,12 @@ const styles = StyleSheet.create({
   goalRow: { flexDirection: 'row', alignItems: 'center', paddingVertical: 10, borderBottomWidth: 1, borderBottomColor: '#F5F5F5' },
   goalIcon: { fontSize: 16, marginRight: 10 },
   goalText: { flex: 1, fontSize: 15, color: '#1a1a1a' },
+
+  // Preference rows
+  prefGroupLabel: { fontSize: 13, fontWeight: '600', color: '#757575', marginTop: 12, marginBottom: 6 },
+  prefRow: { flexDirection: 'row', alignItems: 'center', paddingVertical: 10, borderBottomWidth: 1, borderBottomColor: '#F5F5F5' },
+  prefDot: { width: 8, height: 8, borderRadius: 4, marginRight: 10 },
+  prefInfo: { flex: 1 },
+  prefName: { fontSize: 15, fontWeight: '500', color: '#1a1a1a' },
+  prefMeta: { fontSize: 12, color: '#757575', marginTop: 2 },
 });
