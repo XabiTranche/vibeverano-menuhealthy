@@ -113,7 +113,7 @@ export default function FamilyScreen() {
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView contentContainerStyle={styles.scrollContent}>
-        <Text style={styles.title}>Mi familia</Text>
+        <Text style={styles.title}>{family?.name ?? 'Mi familia'}</Text>
 
         {/* Readiness banner */}
         {members.length > 0 && (
