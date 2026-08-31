@@ -37,6 +37,8 @@ function RootLayoutNav() {
       <Stack.Screen name="(tabs)" />
       <Stack.Screen name="member/[id]" />
       <Stack.Screen name="substitute/[mealId]" />
+      <Stack.Screen name="recipe/[id]" />
+      <Stack.Screen name="recipe/form" />
     </Stack>
   );
 }

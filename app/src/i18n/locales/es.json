@@ -8,12 +8,83 @@
     "search": "Buscar",
     "loading": "Cargando...",
     "error": "Error",
-    "success": "Hecho"
+    "success": "Hecho",
+    "back": "Volver",
+    "confirm": "Confirmar",
+    "required": "Obligatorio"
   },
   "tabs": {
     "plan": "Plan",
     "recipes": "Recetas",
     "shopping": "Compra",
     "family": "Familia"
+  },
+  "recipes": {
+    "title": "Recetas",
+    "searchPlaceholder": "Buscar plato o ingrediente...",
+    "emptyState": "No se encontraron recetas",
+    "newRecipe": "Nueva receta",
+    "servings": "{{count}} ración",
+    "servings_plural": "{{count}} raciones",
+    "prepTime": "{{minutes}} min",
+    "inUse": "En uso",
+    "filters": {
+      "breakfast": "Desayuno",
+      "lunch": "Comida",
+      "dinner": "Cena",
+      "snack": "Snack"
+    }
+  },
+  "recipeDetail": {
+    "ingredients": "Ingredientes",
+    "nutrition": "Información nutricional",
+    "kcal": "kcal",
+    "carbs": "Carbohidratos",
+    "fat": "Grasas",
+    "protein": "Proteínas",
+    "servings": "Raciones",
+    "prepTime": "Tiempo de preparación",
+    "minutes": "min",
+    "mealType": "Tipo de comida",
+    "compatibility": "Compatibilidad",
+    "goals": "Objetivos",
+    "noIngredients": "Sin ingredientes",
+    "noNutrition": "Sin datos nutricionales",
+    "editRecipe": "Editar receta",
+    "deleteRecipe": "Eliminar receta",
+    "deleteConfirmTitle": "Eliminar receta",
+    "deleteConfirmMessage": "¿Seguro que quieres eliminar \"{{name}}\"? Esta acción no se puede deshacer.",
+    "deleteBlocked": "No se puede eliminar",
+    "copyToFamily": "Copiar a mis recetas",
+    "copied": "Receta copiada a tu catálogo familiar"
+  },
+  "recipeForm": {
+    "createTitle": "Nueva receta",
+    "editTitle": "Editar receta",
+    "name": "Nombre de la receta",
+    "namePlaceholder": "Ej: Ensalada César",
+    "mealType": "Tipo de comida",
+    "servings": "Raciones",
+    "prepTime": "Tiempo de preparación (min)",
+    "prepTimePlaceholder": "Ej: 30",
+    "ingredients": "Ingredientes",
+    "addIngredient": "Añadir ingrediente",
+    "searchIngredient": "Buscar ingrediente...",
+    "quantity": "Cantidad",
+    "unit": "Unidad",
+    "unitPlaceholder": "Ej: g, ml, ud",
+    "removeIngredient": "Quitar",
+    "validationName": "El nombre es obligatorio",
+    "validationIngredients": "Añade al menos un ingrediente",
+    "validationServings": "Las raciones deben ser al menos 1",
+    "saveError": "Error al guardar la receta",
+    "saveSuccess": "Receta guardada correctamente"
+  },
+  "ingredientCategories": {
+    "fruits_vegetables": "Frutas y verduras",
+    "meats": "Carnes y pescados",
+    "dairy": "Lácteos",
+    "cereals": "Cereales y legumbres",
+    "other": "Otros"
   }
 }
