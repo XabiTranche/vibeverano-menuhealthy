@@ -50,6 +50,11 @@ export const RecipeService = {
     if (input.ingredients.length === 0) throw new Error('At least one ingredient is required');
     if (input.servings < 1) throw new Error('Servings must be at least 1');
 
+    // Validate quantities before inserting anything
+    for (const ing of input.ingredients) {
+      if (ing.quantity <= 0) throw new Error('All ingredient quantities must be greater than 0');
+    }
+
     const { data: recipe, error } = await supabase
       .from('family_recipes')
       .insert({
@@ -81,7 +86,11 @@ export const RecipeService = {
       .from('recipe_ingredients')
       .insert(ingredientRows);
 
-    if (ingError) throw ingError;
+    if (ingError) {
+      // Rollback: delete the recipe if ingredients failed
+      await supabase.from('family_recipes').delete().eq('id', recipe.id);
+      throw ingError;
+    }
 
     return recipe;
   },

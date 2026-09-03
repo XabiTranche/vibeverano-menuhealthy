@@ -53,7 +53,7 @@ export const PlannerService = {
   },
 
   /**
-   * Get meals for a proposal
+   * Get meals for a proposal (resolves recipe names from both sources)
    */
   async getMeals(proposalId: string): Promise<PlannedMeal[]> {
     const { data, error } = await supabase
@@ -65,36 +65,51 @@ export const PlannerService = {
 
     if (error) throw error;
 
-    // Enrich with recipe names from base catalog
     const meals = data ?? [];
-    const recipeIds = meals.map((m) => m.base_recipe_id).filter(Boolean);
 
-    if (recipeIds.length > 0) {
-      const { data: recipes } = await supabase
-        .from('base_catalog_recipes')
-        .select('id, name, nutritional_total')
-        .in('id', recipeIds);
+    // Collect IDs by source
+    const baseIds = meals.map((m) => m.base_recipe_id).filter(Boolean) as string[];
+    const familyIds = meals.map((m) => m.recipe_id).filter(Boolean) as string[];
 
-      const recipeMap = new Map(
-        (recipes ?? []).map((r) => [r.id, r]),
-      );
+    // Fetch names from both sources in parallel
+    const [baseResult, familyResult] = await Promise.all([
+      baseIds.length > 0
+        ? supabase
+            .from('base_catalog_recipes')
+            .select('id, name, nutritional_total')
+            .in('id', baseIds)
+        : { data: [] },
+      familyIds.length > 0
+        ? supabase
+            .from('family_recipes')
+            .select('id, name, nutritional_total')
+            .in('id', familyIds)
+        : { data: [] },
+    ]);
 
-      return meals.map((meal) => ({
-        ...meal,
-        recipe_name: meal.base_recipe_id
-          ? recipeMap.get(meal.base_recipe_id)?.name
-          : undefined,
-        recipe_nutritional: meal.base_recipe_id
-          ? recipeMap.get(meal.base_recipe_id)?.nutritional_total
-          : null,
-      }));
+    const recipeMap = new Map<string, { name: string; nutritional_total: { kcal: number; protein: number } | null }>();
+
+    for (const r of baseResult.data ?? []) {
+      recipeMap.set(r.id, { name: r.name, nutritional_total: r.nutritional_total });
+    }
+    for (const r of familyResult.data ?? []) {
+      recipeMap.set(r.id, { name: r.name, nutritional_total: r.nutritional_total });
     }
 
-    return meals;
+    return meals.map((meal) => {
+      const recipeId = meal.recipe_id ?? meal.base_recipe_id;
+      const info = recipeId ? recipeMap.get(recipeId) : undefined;
+      return {
+        ...meal,
+        recipe_name: info?.name,
+        recipe_nutritional: info?.nutritional_total ?? null,
+      };
+    });
   },
 
   /**
-   * Generate a weekly menu from base catalog recipes
+   * Generate a weekly menu from family recipes + base catalog (mixed)
+   * Priority: family recipes first, fill gaps with base catalog
    * Algorithm: filter by restrictions, then pick per meal type, avoid repetition in lunch/dinner
    */
   async generateWeek(startDate: string, endDate: string): Promise<PlannedWeek> {
@@ -116,71 +131,178 @@ export const PlannerService = {
         .in('member_id', memberIds)
         .in('category', ['allergy', 'intolerance', 'ethical_religious']);
 
-      // Collect all allergen names (lowercase for matching)
       restrictedAllergens = [...new Set(
         (restrictions ?? []).map((r) => r.name.toLowerCase()),
       )];
     }
 
-    // 2. Get all base recipes
-    const { data: allRecipes, error: recError } = await supabase
-      .from('base_catalog_recipes')
-      .select('*');
+    // 2. Get all master ingredients for allergen checking
+    const { data: masterIngredients } = await supabase
+      .from('master_ingredients')
+      .select('id, canonical_name, allergen_flags');
 
-    if (recError) throw recError;
-
-    // 3. Filter out recipes that conflict with mandatory restrictions
-    // Strategy: check recipe ingredients against restricted allergens
-    // A recipe is unsafe if it contains an ingredient whose canonical_name or allergen_flags match a restriction
-    let safeRecipes = allRecipes ?? [];
-
+    const restrictedIngredientIds = new Set<string>();
     if (restrictedAllergens.length > 0) {
-      // Get all master ingredients to check allergen_flags and names
-      const { data: masterIngredients } = await supabase
-        .from('master_ingredients')
-        .select('id, canonical_name, allergen_flags');
-
-      // Build set of ingredient IDs that are restricted
-      const restrictedIngredientIds = new Set<string>();
       for (const ing of masterIngredients ?? []) {
         const flags = (ing.allergen_flags ?? []) as string[];
         const name = ing.canonical_name.toLowerCase();
-
         for (const allergen of restrictedAllergens) {
-          // Match by allergen flag (ej: restriction "lactosa" matches flag "lactosa")
-          if (flags.includes(allergen)) {
-            restrictedIngredientIds.add(ing.id);
-            break;
-          }
-          // Match by ingredient name (ej: restriction "tomate" matches ingredient "tomate")
-          if (name === allergen || name.includes(allergen)) {
+          if (flags.includes(allergen) || name === allergen || name.includes(allergen)) {
             restrictedIngredientIds.add(ing.id);
             break;
           }
         }
       }
+    }
 
-      // Filter recipes: exclude those containing restricted ingredients
-      safeRecipes = safeRecipes.filter((recipe) => {
-        const ingredients = (recipe.ingredients ?? []) as Array<{ ingredient_id: string }>;
-        return !ingredients.some((ing) => restrictedIngredientIds.has(ing.ingredient_id));
+    // Helper to check if a recipe's ingredients are safe
+    const isSafe = (ingredients: Array<{ ingredient_id: string }>): boolean => {
+      if (restrictedIngredientIds.size === 0) return true;
+      return !ingredients.some((ing) => restrictedIngredientIds.has(ing.ingredient_id));
+    };
+
+    // 3. Get family recipes + their ingredients
+    const { data: allFamilyRecipes } = await supabase
+      .from('family_recipes')
+      .select('*')
+      .eq('family_id', familyId);
+
+    const familyRecipeList = allFamilyRecipes ?? [];
+    let safeFamilyRecipes = familyRecipeList;
+
+    // Get ingredients for all family recipes (needed for restrictions + preferences)
+    const familyRecipeIds = familyRecipeList.map((r) => r.id);
+    const ingredientsByRecipe = new Map<string, Array<{ ingredient_id: string }>>();
+    if (familyRecipeIds.length > 0) {
+      const { data: familyIngredients } = await supabase
+        .from('recipe_ingredients')
+        .select('recipe_id, ingredient_id')
+        .in('recipe_id', familyRecipeIds);
+      for (const ing of familyIngredients ?? []) {
+        const list = ingredientsByRecipe.get(ing.recipe_id) ?? [];
+        list.push({ ingredient_id: ing.ingredient_id });
+        ingredientsByRecipe.set(ing.recipe_id, list);
+      }
+    }
+
+    if (restrictedIngredientIds.size > 0 && familyRecipeList.length > 0) {
+      safeFamilyRecipes = familyRecipeList.filter((r) => {
+        const ings = ingredientsByRecipe.get(r.id) ?? [];
+        return isSafe(ings);
       });
     }
 
-    console.log(`[PlannerService] ${allRecipes?.length} total recipes, ${safeRecipes.length} safe after filtering ${restrictedAllergens.length} restrictions: ${restrictedAllergens.join(', ')}`);
+    // 4. Get base catalog recipes (as fallback / to fill gaps)
+    const { data: allBaseRecipes, error: recError } = await supabase
+      .from('base_catalog_recipes')
+      .select('*');
 
-    // 4. Group safe recipes by meal type
-    const recipesByType: Record<MealType, BaseCatalogRecipe[]> = {
+    if (recError) throw recError;
+
+    let safeBaseRecipes = allBaseRecipes ?? [];
+    if (restrictedIngredientIds.size > 0) {
+      safeBaseRecipes = safeBaseRecipes.filter((recipe) => {
+        const ingredients = (recipe.ingredients ?? []) as Array<{ ingredient_id: string }>;
+        return isSafe(ingredients);
+      });
+    }
+
+    console.log(`[PlannerService] Family: ${safeFamilyRecipes.length} safe, Base: ${safeBaseRecipes.length} safe, Restrictions: ${restrictedAllergens.join(', ')}`);
+
+    // 4b. Load food preferences for all active members
+    let likedFoods: string[] = [];
+    let dislikedFoods: string[] = [];
+    if (memberIds.length > 0) {
+      const { data: prefs } = await supabase
+        .from('food_preferences')
+        .select('food_item, type, intensity')
+        .in('member_id', memberIds);
+
+      for (const p of prefs ?? []) {
+        const item = p.food_item.toLowerCase();
+        if (p.type === 'liked') {
+          likedFoods.push(item);
+        } else {
+          dislikedFoods.push(item);
+        }
+      }
+    }
+
+    // Build sets of ingredient IDs that are liked/disliked
+    // Match food_item text against master ingredient canonical_name
+    const likedIngredientIds = new Set<string>();
+    const dislikedIngredientIds = new Set<string>();
+    if (likedFoods.length > 0 || dislikedFoods.length > 0) {
+      for (const ing of masterIngredients ?? []) {
+        const name = ing.canonical_name.toLowerCase();
+        for (const liked of likedFoods) {
+          if (name.includes(liked) || liked.includes(name)) {
+            likedIngredientIds.add(ing.id);
+            break;
+          }
+        }
+        for (const disliked of dislikedFoods) {
+          if (name.includes(disliked) || disliked.includes(name)) {
+            dislikedIngredientIds.add(ing.id);
+            break;
+          }
+        }
+      }
+    }
+
+    // Score a recipe based on preferences: +1 per liked ingredient, -1 per disliked
+    const scoreRecipeIngredients = (ingredients: Array<{ ingredient_id: string }>): number => {
+      let score = 0;
+      for (const ing of ingredients) {
+        if (likedIngredientIds.has(ing.ingredient_id)) score += 1;
+        if (dislikedIngredientIds.has(ing.ingredient_id)) score -= 1;
+      }
+      return score;
+    };
+
+    console.log(`[PlannerService] Preferences: ${likedFoods.length} liked, ${dislikedFoods.length} disliked`);
+
+    // 5. Build unified pool per meal type with preference scores
+    interface UnifiedRecipe {
+      id: string;
+      name: string;
+      meal_type: MealType;
+      source: 'family' | 'base';
+      prefScore: number;
+    }
+
+    const poolByType: Record<MealType, UnifiedRecipe[]> = {
       breakfast: [],
       lunch: [],
       dinner: [],
       snack: [],
     };
-    for (const r of safeRecipes) {
-      recipesByType[r.meal_type as MealType]?.push(r);
+
+    // Add family recipes first (higher priority)
+    for (const r of safeFamilyRecipes) {
+      const ings = ingredientsByRecipe.get(r.id) ?? [];
+      poolByType[r.meal_type as MealType]?.push({
+        id: r.id,
+        name: r.name,
+        meal_type: r.meal_type as MealType,
+        source: 'family',
+        prefScore: scoreRecipeIngredients(ings),
+      });
     }
 
-    // 5. Create PlannedWeek
+    // Then base recipes
+    for (const r of safeBaseRecipes) {
+      const ings = (r.ingredients ?? []) as Array<{ ingredient_id: string }>;
+      poolByType[r.meal_type as MealType]?.push({
+        id: r.id,
+        name: r.name,
+        meal_type: r.meal_type as MealType,
+        source: 'base',
+        prefScore: scoreRecipeIngredients(ings),
+      });
+    }
+
+    // 6. Create PlannedWeek
     const { data: week, error: weekError } = await supabase
       .from('planned_weeks')
       .insert({
@@ -194,7 +316,7 @@ export const PlannerService = {
 
     if (weekError) throw weekError;
 
-    // 6. Create MenuProposal
+    // 7. Create MenuProposal
     const { data: proposal, error: propError } = await supabase
       .from('menu_proposals')
       .insert({
@@ -203,7 +325,10 @@ export const PlannerService = {
         criteria_snapshot: {
           restricted_allergens: restrictedAllergens,
           members_count: memberIds.length,
-          safe_recipes_count: safeRecipes.length,
+          safe_family_recipes: safeFamilyRecipes.length,
+          safe_base_recipes: safeBaseRecipes.length,
+          liked_foods: likedFoods,
+          disliked_foods: dislikedFoods,
         },
       })
       .select()
@@ -211,7 +336,7 @@ export const PlannerService = {
 
     if (propError) throw propError;
 
-    // 7. Generate meals for each day
+    // 8. Generate meals for each day
     const days = getDaysBetween(startDate, endDate);
     const mealTypes: MealType[] = ['breakfast', 'lunch', 'dinner', 'snack'];
     const usedLunch = new Set<string>();
@@ -220,29 +345,31 @@ export const PlannerService = {
       proposal_id: string;
       day: string;
       meal_type: MealType;
-      base_recipe_id: string;
+      recipe_id: string | null;
+      base_recipe_id: string | null;
       status: string;
     }> = [];
 
     for (const day of days) {
       for (const mealType of mealTypes) {
-        const pool = recipesByType[mealType];
+        const pool = poolByType[mealType];
         if (!pool || pool.length === 0) continue;
 
         let available = [...pool];
 
         // Avoid repetition for lunch/dinner
         if (mealType === 'lunch') {
-          available = available.filter((r) => !usedLunch.has(r.id));
-          if (available.length === 0) available = [...pool]; // fallback if all used
+          const filtered = available.filter((r) => !usedLunch.has(r.id));
+          if (filtered.length > 0) available = filtered;
         }
         if (mealType === 'dinner') {
-          available = available.filter((r) => !usedDinner.has(r.id));
-          if (available.length === 0) available = [...pool]; // fallback
+          const filtered = available.filter((r) => !usedDinner.has(r.id));
+          if (filtered.length > 0) available = filtered;
         }
 
-        // Pick random recipe from safe pool
-        const recipe = available[Math.floor(Math.random() * available.length)];
+        // Pick recipe weighted by preference score
+        // Higher score = more likely to be picked, but not guaranteed
+        const recipe = pickWeightedByPreference(available);
 
         if (mealType === 'lunch') usedLunch.add(recipe.id);
         if (mealType === 'dinner') usedDinner.add(recipe.id);
@@ -251,13 +378,14 @@ export const PlannerService = {
           proposal_id: proposal.id,
           day,
           meal_type: mealType,
-          base_recipe_id: recipe.id,
+          recipe_id: recipe.source === 'family' ? recipe.id : null,
+          base_recipe_id: recipe.source === 'base' ? recipe.id : null,
           status: 'planned',
         });
       }
     }
 
-    // 8. Insert meals
+    // 9. Insert meals
     if (meals.length > 0) {
       const { error: mealsError } = await supabase
         .from('planned_meals')
@@ -302,6 +430,27 @@ export const PlannerService = {
     return data;
   },
 };
+
+// Helper: pick a recipe weighted by preference score
+// Recipes with higher scores are more likely to be selected
+// Recipes with negative scores can still be picked (preferences are non-blocking)
+function pickWeightedByPreference<T extends { prefScore: number }>(items: T[]): T {
+  if (items.length === 1) return items[0];
+
+  // Shift scores so the minimum is at least 1 (all recipes get a chance)
+  const minScore = Math.min(...items.map((i) => i.prefScore));
+  const shift = minScore < 0 ? Math.abs(minScore) + 1 : 1;
+
+  const weights = items.map((item) => item.prefScore + shift);
+  const totalWeight = weights.reduce((a, b) => a + b, 0);
+
+  let random = Math.random() * totalWeight;
+  for (let i = 0; i < items.length; i++) {
+    random -= weights[i];
+    if (random <= 0) return items[i];
+  }
+  return items[items.length - 1];
+}
 
 // Helper: get array of date strings between two dates
 function getDaysBetween(start: string, end: string): string[] {

@@ -8,6 +8,10 @@
     "userInterfaceStyle": "light",
     "newArchEnabled": true,
     "scheme": "menuhealthy",
+    "web": {
+      "bundler": "metro",
+      "output": "single"
+    },
     "splash": {
       "image": "./assets/splash-icon.png",
       "resizeMode": "contain",
